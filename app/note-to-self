@@ -1,0 +1,5 @@
+for continuously reading data from Matt's activity recognition script, use the multiprocessing package
+Link to stack overflow answer here:
+https://stackoverflow.com/questions/43861164/passing-data-between-separately-running-python-scripts
+
+Read more about multiprocessing and its implementation when I actually start doing it
