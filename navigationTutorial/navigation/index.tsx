@@ -11,6 +11,7 @@ import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
+import HeaderContents from './headerContents';
 import useColorScheme from '../hooks/useColorScheme';
 import SettingsModal from '../screens/SettingsModal';
 import ProfileModal from '../screens/ProfileModal';
@@ -71,7 +72,6 @@ function BottomTabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           headerTitle:"",
-          // title: 'Home Screen',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerLeft:() => (
             <Pressable
