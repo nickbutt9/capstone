@@ -7,7 +7,8 @@ import useColorScheme from '../hooks/useColorScheme';
 
 const colorScheme = useColorScheme();
 
-export default function HeaderContents( { navigation }: RootTabScreenProps<'Home'>){
+
+export default function HeaderContents(){
   return (
     <Pressable
       onPress={() => navigation.navigate("Profile")}

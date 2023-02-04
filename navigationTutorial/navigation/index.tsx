@@ -25,7 +25,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
-      
+
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <RootNavigator />
@@ -72,8 +72,10 @@ function BottomTabNavigator() {
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           headerTitle:"",
+          headerStyle: {backgroundColor: Colors.grey.text},
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerLeft:() => (
+            // <HeaderContents />
             <Pressable
               onPress={() => navigation.navigate('Profile')}
               style={({ pressed }) => ({
@@ -106,20 +108,78 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Pressure"
         component={PressureScreen}
-        options={{
-          headerTitle: '',
-          // headerShown:false,
+        options={({ navigation }: RootTabScreenProps<'Pressure'>) => ({
+          headerTitle:"",
+          // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />,
-        }}
+          headerStyle: {backgroundColor: Colors.grey.text},
+          headerLeft:() => (
+            <Pressable
+              onPress={() => navigation.navigate('Profile')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="user"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginLeft: 15 }}
+              />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Settings')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="gear"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
       <BottomTab.Screen
         name="Logs"
         component={LogsScreen}
-        options={{
-          headerTitle: '',
-          // headerShown:false,
+        options={({ navigation }: RootTabScreenProps<'Logs'>) => ({
+          headerTitle:"",
+          headerStyle: {backgroundColor: Colors.grey.text},
+          // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
-        }}
+          headerLeft:() => (
+            <Pressable
+              onPress={() => navigation.navigate('Profile')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="user"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginLeft: 15 }}
+              />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Settings')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}>
+              <FontAwesome
+                name="gear"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
       />
     </BottomTab.Navigator>
   );
