@@ -9943,6 +9943,11 @@ react-native-gradle-plugin@^0.70.3:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
   integrity sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A==
 
+react-native-popup-view@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/react-native-popup-view/-/react-native-popup-view-0.1.2.tgz"
+  integrity sha512-EQV1Udml8r+wxcXCBdwEK70dEgQIKxedPbUNDjRxpu3+SC/v+MfMsU3x83WC0+e144tsNbEzSA7T/gCDhB6p2g==
+
 react-native-safe-area-context@4.4.1:
   version "4.4.1"
   resolved "https://registry.npmjs.org/react-native-safe-area-context/-/react-native-safe-area-context-4.4.1.tgz"

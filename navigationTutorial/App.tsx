@@ -4,6 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
+import { PopupProvider } from 'react-native-popup-view';
 
 export default function App() {
   console.log("App Refreshed")
@@ -14,10 +15,12 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaProvider >
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar />
-      </SafeAreaProvider>
+      <PopupProvider>
+        <SafeAreaProvider >
+          <Navigation colorScheme={colorScheme} />
+          <StatusBar />
+        </SafeAreaProvider>
+      </PopupProvider>
     );
   }
 }
