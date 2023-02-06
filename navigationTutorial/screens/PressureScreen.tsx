@@ -18,11 +18,11 @@ export default function PressureScreen() {
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Pressure</Text>
           <Text style={styles.texts}>Today</Text>
-          <LineChart data={data} width={chartWidth} height={chartHeight} chartConfig={chartConfig}/>
+          <LineChart data={lineData} width={chartWidth} height={chartHeight} chartConfig={chartConfig} bezier verticalLabelRotation={0} fromZero withHorizontalLines={false} withVerticalLines={false}/>
         </View>
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Steps Walked</Text>
-          <BarChart data={stepsData} width={chartWidth} height={chartHeight} yAxisSuffix="" yAxisLabel="" chartConfig={chartConfig} verticalLabelRotation={0} showValuesOnTopOfBars withHorizontalLabels={ false }/>
+          <BarChart data={stepsData} width={chartWidth} height={chartHeight} withInnerLines={false} yAxisSuffix="" yAxisLabel="" chartConfig={chartConfig} verticalLabelRotation={0} showValuesOnTopOfBars fromZero withHorizontalLabels={false} style={{marginLeft: -60}}/>
         </View>
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Today's Activities</Text>
@@ -53,7 +53,7 @@ export default function PressureScreen() {
 }
 
 const stepsData = {
-  labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+  labels: ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"],
   datasets: [
     {
       data: [512, 240, 480, 360, 440, 640, 230],
@@ -61,8 +61,8 @@ const stepsData = {
   ]
 };
 
-const data = {
-  labels: ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"],
+const lineData = {
+  labels: ["12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm", "8pm", "9pm"],
   datasets: [
     {
       data: [20, 45, 28, 80, 99, 43, 54, 30, 67, 97],

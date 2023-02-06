@@ -3,7 +3,8 @@ import Colors from './Colors'
 
 const screenWidth = Dimensions.get("window").width;
 const chartWidth = 0.9*screenWidth;
-const chartHeight = 200;
+const chartHeight = 220;
+const diameter = chartWidth/4;
 
 const styles = StyleSheet.create({
     scrollContainer: {
@@ -30,8 +31,8 @@ const styles = StyleSheet.create({
     horizontalContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      // backgroundColor: 'white',
-      marginTop:10,
+      // backgroundColor: 'black',
+      margin:10,
     },
     title: {
       fontSize: 30,
@@ -69,28 +70,30 @@ const styles = StyleSheet.create({
       alignSelf:'center'
     },
     circlesContainers: {
-      width: 150,
-      marginHorizontal: 30,
+      marginHorizontal: 0.03*screenWidth,
       alignItems: 'center',
+      // backgroundColor:'black'
     },
     circles: {
-      width: 100,
-      height: 100,
-      borderRadius: 100 / 2,
+      width: diameter,
+      height: diameter,
+      borderRadius: diameter / 2,
       backgroundColor: Colors.primary.text,
-      textAlign:'center',
       justifyContent: 'center',
+      alignItems:'center'
     },
   });
 
   const chartConfig = {
-    backgroundGradientFrom: "white",
-    backgroundGradientTo: "white",
+    // backgroundGradientFrom: "white",
+    // backgroundGradientTo: "white",
+    backgroundGradientFromOpacity:0,
+    backgroundGradientToOpacity:0,
     fillShadowGradientFromOpacity:0.5,
     fillShadowGradientToOpacity:0.5,
     // color: Colors.secondary.text,
     color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
-    barPercentage: 1,
+    barPercentage: 0.75,
     // useShadowColorFromDataset: true // optional
   };
   
