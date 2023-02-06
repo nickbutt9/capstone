@@ -1,15 +1,14 @@
-import { StyleSheet, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Colors from './Colors'
 
 const screenWidth = Dimensions.get("window").width;
-const chartWidth = 0.9*screenWidth;
+const contentWidth = 0.9*screenWidth;
 const chartHeight = 220;
-const diameter = chartWidth/4;
+const diameter = contentWidth/4;
 
 const styles = StyleSheet.create({
     scrollContainer: {
       flex: 1,
-      paddingTop: StatusBar.currentHeight,
     },
     scrollView: {
       backgroundColor: Colors.grey.text,
@@ -27,6 +26,17 @@ const styles = StyleSheet.create({
       marginHorizontal:(0.025*screenWidth),
       marginBottom:(0.025*screenWidth),
       paddingBottom:15,
+    },
+    homeContainer: {
+      alignItems: 'center',
+      borderRadius:10,
+      // // backgroundColor: 'white',
+      // marginHorizontal:(0.025*screenWidth),
+      // marginBottom:(0.025*screenWidth),
+      // paddingBottom:15,
+    },
+    calendarContainer: {
+      width: contentWidth,
     },
     horizontalContainer: {
       flexDirection: 'row',
