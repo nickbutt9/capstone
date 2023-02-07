@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
       backgroundColor: Colors.grey.text,
-      // marginHorizontal: 20,
+      // marginHorizontal: 10,
     },
     container: {
       flex: 1,
@@ -20,23 +20,28 @@ const styles = StyleSheet.create({
       backgroundColor: Colors.grey.text,
     },
     chartsContainer: {
+      alignSelf:'center',
       alignItems: 'center',
       borderRadius:10,
-      // backgroundColor: 'white',
-      marginHorizontal:(0.025*screenWidth),
+      width:0.975*contentWidth,
+      // marginHorizontal:(0.05*screenWidth),
       marginBottom:(0.025*screenWidth),
       paddingBottom:15,
     },
     homeContainer: {
-      alignItems: 'center',
-      borderRadius:10,
-      // // backgroundColor: 'white',
+      width: contentWidth,
+      borderRadius: 10,
       // marginHorizontal:(0.025*screenWidth),
-      // marginBottom:(0.025*screenWidth),
-      // paddingBottom:15,
+      marginBottom:(0.025*screenWidth),
+      backgroundColor:'white',
     },
     calendarContainer: {
       width: contentWidth,
+      borderRadius: 10,
+      // marginHorizontal:(0.025*screenWidth),
+      marginBottom:(0.025*screenWidth),
+      padding:15,
+      backgroundColor:'white'
     },
     horizontalContainer: {
       flexDirection: 'row',
@@ -103,7 +108,7 @@ const styles = StyleSheet.create({
     fillShadowGradientToOpacity:0.5,
     // color: Colors.secondary.text,
     color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
-    barPercentage: 0.75,
+    barPercentage: 1,
     // useShadowColorFromDataset: true // optional
   };
   

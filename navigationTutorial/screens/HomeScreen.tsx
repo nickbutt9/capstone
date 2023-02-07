@@ -12,6 +12,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <View style={styles.homeContainer}>
           <Text style={styles.subtitle}>Distal End Pressure</Text>          
       </View>
+      <View style={styles.homeContainer}>
+          <Text style={styles.subtitle}>Device Battery</Text>          
+      </View>
     </SafeAreaView>
   );
 }

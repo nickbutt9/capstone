@@ -6,7 +6,7 @@ import { Dimensions, ScrollView, SafeAreaView, Image } from "react-native";
 import Colors from '../constants/Colors';
 
 const screenWidth = Dimensions.get("window").width;
-const chartWidth = 0.9*screenWidth;
+const chartWidth = 0.8*screenWidth;
 const chartHeight = 200;
 
 export default function PressureScreen() {
