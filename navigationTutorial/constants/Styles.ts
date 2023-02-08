@@ -29,11 +29,13 @@ const styles = StyleSheet.create({
       paddingBottom:15,
     },
     homeContainer: {
+      alignItems: 'center',
       width: contentWidth,
       borderRadius: 10,
       // marginHorizontal:(0.025*screenWidth),
       marginBottom:(0.025*screenWidth),
       backgroundColor:'white',
+      paddingBottom:15,
     },
     calendarContainer: {
       width: contentWidth,
@@ -46,7 +48,6 @@ const styles = StyleSheet.create({
     horizontalContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      // backgroundColor: 'black',
       margin:10,
     },
     title: {
@@ -73,6 +74,15 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       paddingLeft: 20,
     },
+    whiteTexts: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      // alignSelf: 'flex-start',
+      // justifyContent: 'flex-start',
+      // paddingLeft: 20,
+      color:'white',
+      letterSpacing:1,
+    },
     labels: {
       fontSize: 14,
       fontWeight: '500',
@@ -97,6 +107,18 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems:'center'
     },
+    gauge: {
+      marginBottom:-50,
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 15,
+      borderRadius: 5,
+      width:0.2*contentWidth,
+      elevation: 10,
+      backgroundColor: Colors.primary.text,
+    }
   });
 
   const chartConfig = {
