@@ -6,7 +6,7 @@ import { Dimensions, ScrollView, SafeAreaView, Image } from "react-native";
 import Colors from '../constants/Colors';
 
 const screenWidth = Dimensions.get("window").width;
-const chartWidth = 0.9*screenWidth;
+const chartWidth = 0.8*screenWidth;
 const chartHeight = 200;
 
 export default function PressureScreen() {
@@ -29,19 +29,19 @@ export default function PressureScreen() {
           <View style={styles.horizontalContainer}>
             <View style={styles.circlesContainers}>
               <View style={styles.circles}>
-                <Text style={{color: 'white', letterSpacing:1}}>3.0 hrs</Text>
+                <Text style={styles.whiteTexts}>3.0 hrs</Text>
               </View>
               <Text style={styles.labels}>Stand</Text>
             </View>
             <View style={styles.circlesContainers}>
               <View style={styles.circles}>
-                <Text style={{color: 'white', letterSpacing:1}}>4.3 hrs</Text>
+                <Text style={styles.whiteTexts}>4.3 hrs</Text>
               </View>
               <Text style={styles.labels}>Sit</Text>
             </View>
             <View style={styles.circlesContainers}>
               <View style={styles.circles}>
-                <Text style={{color: 'white', letterSpacing:1}}>2.1 hrs</Text>
+                <Text style={styles.whiteTexts}>2.1 hrs</Text>
               </View>
               <Text style={styles.labels}>Walk</Text>
             </View>

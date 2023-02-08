@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     },
     scrollView: {
       backgroundColor: Colors.grey.text,
-      // marginHorizontal: 20,
+      // marginHorizontal: 10,
     },
     container: {
       flex: 1,
@@ -20,28 +20,34 @@ const styles = StyleSheet.create({
       backgroundColor: Colors.grey.text,
     },
     chartsContainer: {
+      alignSelf:'center',
       alignItems: 'center',
       borderRadius:10,
-      // backgroundColor: 'white',
-      marginHorizontal:(0.025*screenWidth),
+      width:0.975*contentWidth,
+      // marginHorizontal:(0.05*screenWidth),
       marginBottom:(0.025*screenWidth),
       paddingBottom:15,
     },
     homeContainer: {
       alignItems: 'center',
-      borderRadius:10,
-      // // backgroundColor: 'white',
+      width: contentWidth,
+      borderRadius: 10,
       // marginHorizontal:(0.025*screenWidth),
-      // marginBottom:(0.025*screenWidth),
-      // paddingBottom:15,
+      marginBottom:(0.025*screenWidth),
+      backgroundColor:'white',
+      paddingBottom:15,
     },
     calendarContainer: {
       width: contentWidth,
+      borderRadius: 10,
+      // marginHorizontal:(0.025*screenWidth),
+      marginBottom:(0.025*screenWidth),
+      padding:15,
+      backgroundColor:'white'
     },
     horizontalContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      // backgroundColor: 'black',
       margin:10,
     },
     title: {
@@ -68,6 +74,15 @@ const styles = StyleSheet.create({
       justifyContent: 'flex-start',
       paddingLeft: 20,
     },
+    whiteTexts: {
+      fontSize: 18,
+      fontWeight: 'bold',
+      // alignSelf: 'flex-start',
+      // justifyContent: 'flex-start',
+      // paddingLeft: 20,
+      color:'white',
+      letterSpacing:1,
+    },
     labels: {
       fontSize: 14,
       fontWeight: '500',
@@ -92,6 +107,18 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems:'center'
     },
+    gauge: {
+      marginBottom:-50,
+    },
+    button: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingVertical: 15,
+      borderRadius: 5,
+      width:0.2*contentWidth,
+      elevation: 10,
+      backgroundColor: Colors.primary.text,
+    }
   });
 
   const chartConfig = {
@@ -103,7 +130,7 @@ const styles = StyleSheet.create({
     fillShadowGradientToOpacity:0.5,
     // color: Colors.secondary.text,
     color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
-    barPercentage: 0.75,
+    barPercentage: 1,
     // useShadowColorFromDataset: true // optional
   };
   

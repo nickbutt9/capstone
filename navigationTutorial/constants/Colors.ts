@@ -32,6 +32,10 @@ export default {
     text: '#293556',
     background: '#293556',
   },
+  shading: {
+    text: '#E4EAFD',
+    background: '#E4EAFD',
+  },
   grey: {
     text: '#f3f3f3',
     background: '#f3f3f3',
