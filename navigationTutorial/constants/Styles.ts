@@ -37,6 +37,16 @@ const styles = StyleSheet.create({
       backgroundColor:'white',
       paddingBottom:15,
     },
+    alertContainer: {
+      flexDirection: 'row',
+      alignItems:'center',
+      width: contentWidth,
+      borderRadius: 10,
+      // marginHorizontal:(0.025*screenWidth),
+      marginBottom:(0.025*screenWidth),
+      backgroundColor: Colors.primary.text,
+      padding:15,
+    },
     calendarContainer: {
       width: contentWidth,
       borderRadius: 10,
@@ -118,6 +128,18 @@ const styles = StyleSheet.create({
       width:0.2*contentWidth,
       elevation: 10,
       backgroundColor: Colors.primary.text,
+    },
+    alertButton: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent:'center',
+      // justifyContent: 'center',
+      // alignContent:'center',
+      borderRadius: 10,
+      width:0.2*contentWidth,
+      elevation: 10,
+      backgroundColor: "white",
+      height: 35,
     }
   });
 
