@@ -6,6 +6,8 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { PopupProvider } from 'react-native-popup-view';
 
+import 'expo-dev-client';
+
 export default function App() {
   console.log("App Refreshed")
   const isLoadingComplete = useCachedResources();

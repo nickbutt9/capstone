@@ -8,10 +8,10 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function LogsScreen() {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Logs</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <View style={styles.calendarContainer}>
+    <SafeAreaView style={styles.container.plainContainer}>
+      <Text style={styles.text.title}>Logs</Text>
+      <View style={styles.seperator.seperator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      <View style={styles.container.calendarContainer}>
         <Calendar
           renderArrow={
             (direction) => {

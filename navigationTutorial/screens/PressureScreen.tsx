@@ -11,39 +11,39 @@ const chartHeight = 200;
 
 export default function PressureScreen() {
   return (
-    <SafeAreaView style={styles.scrollContainer}>
-      <ScrollView style={styles.scrollView}>
-        <Text style={styles.title}>Today's Data</Text>
-        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <View style={styles.chartsContainer}>
-          <Text style={styles.subtitle}>Pressure</Text>
-          <Text style={styles.texts}>Today</Text>
+    <SafeAreaView style={styles.container.scrollContainer}>
+      <ScrollView style={styles.container.scrollView}>
+        <Text style={styles.text.title}>Today's Data</Text>
+        <View style={styles.seperator.seperator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+        <View style={styles.container.chartsContainer}>
+          <Text style={styles.text.subtitle}>Pressure</Text>
+          <Text style={styles.text.texts}>Today</Text>
           <LineChart data={lineData} width={chartWidth+30} height={chartHeight} chartConfig={chartConfig} bezier verticalLabelRotation={0} fromZero withVerticalLines={false} style={{marginLeft: -10}}/>
         </View>
-        <View style={styles.chartsContainer}>
-          <Text style={styles.subtitle}>Steps Walked</Text>
+        <View style={styles.container.chartsContainer}>
+          <Text style={styles.text.subtitle}>Steps Walked</Text>
           <BarChart data={stepsData} width={chartWidth+70} height={chartHeight} withInnerLines={false} yAxisSuffix="" yAxisLabel="" chartConfig={chartConfig} verticalLabelRotation={0} showValuesOnTopOfBars fromZero withHorizontalLabels={false} style={{marginLeft: -70}}/>
         </View>
-        <View style={styles.chartsContainer}>
-          <Text style={styles.subtitle}>Today's Activities</Text>
-          <View style={styles.horizontalContainer}>
-            <View style={styles.circlesContainers}>
-              <View style={styles.circles}>
-                <Text style={styles.whiteTexts}>3.0 hrs</Text>
+        <View style={styles.container.chartsContainer}>
+          <Text style={styles.text.subtitle}>Today's Activities</Text>
+          <View style={styles.container.horizontalContainer}>
+            <View style={styles.container.circlesContainers}>
+              <View style={styles.shape.circles}>
+                <Text style={styles.text.whiteTexts}>3.0 hrs</Text>
               </View>
-              <Text style={styles.labels}>Stand</Text>
+              <Text style={styles.text.labels}>Stand</Text>
             </View>
-            <View style={styles.circlesContainers}>
-              <View style={styles.circles}>
-                <Text style={styles.whiteTexts}>4.3 hrs</Text>
+            <View style={styles.container.circlesContainers}>
+              <View style={styles.shape.circles}>
+                <Text style={styles.text.whiteTexts}>4.3 hrs</Text>
               </View>
-              <Text style={styles.labels}>Sit</Text>
+              <Text style={styles.text.labels}>Sit</Text>
             </View>
-            <View style={styles.circlesContainers}>
-              <View style={styles.circles}>
-                <Text style={styles.whiteTexts}>2.1 hrs</Text>
+            <View style={styles.container.circlesContainers}>
+              <View style={styles.shape.circles}>
+                <Text style={styles.text.whiteTexts}>2.1 hrs</Text>
               </View>
-              <Text style={styles.labels}>Walk</Text>
+              <Text style={styles.text.labels}>Walk</Text>
             </View>
           </View>
         </View>
