@@ -18,11 +18,11 @@ export default function PressureScreen() {
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Pressure</Text>
           <Text style={styles.texts}>Today</Text>
-          <LineChart data={lineData} width={chartWidth} height={chartHeight} chartConfig={chartConfig} bezier verticalLabelRotation={0} fromZero withVerticalLines={false}/>
+          <LineChart data={lineData} width={chartWidth+30} height={chartHeight} chartConfig={chartConfig} bezier verticalLabelRotation={0} fromZero withVerticalLines={false} style={{marginLeft: -10}}/>
         </View>
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Steps Walked</Text>
-          <BarChart data={stepsData} width={chartWidth} height={chartHeight} withInnerLines={false} yAxisSuffix="" yAxisLabel="" chartConfig={chartConfig} verticalLabelRotation={0} showValuesOnTopOfBars fromZero withHorizontalLabels={false} style={{marginLeft: -70}}/>
+          <BarChart data={stepsData} width={chartWidth+70} height={chartHeight} withInnerLines={false} yAxisSuffix="" yAxisLabel="" chartConfig={chartConfig} verticalLabelRotation={0} showValuesOnTopOfBars fromZero withHorizontalLabels={false} style={{marginLeft: -70}}/>
         </View>
         <View style={styles.chartsContainer}>
           <Text style={styles.subtitle}>Today's Activities</Text>

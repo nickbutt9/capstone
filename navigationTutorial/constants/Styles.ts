@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       // marginHorizontal:(0.025*screenWidth),
       marginBottom:(0.025*screenWidth),
       padding:15,
-      backgroundColor:'white'
+      // backgroundColor:'white'
     },
     horizontalContainer: {
       flexDirection: 'row',
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
       paddingLeft: 20,
     },
     whiteTexts: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: 'bold',
       // alignSelf: 'flex-start',
       // justifyContent: 'flex-start',
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
       alignSelf:'center'
     },
     circlesContainers: {
-      marginHorizontal: 0.03*screenWidth,
+      marginHorizontal: 0.02*screenWidth,
       alignItems: 'center',
       // backgroundColor:'black'
     },
@@ -124,10 +124,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 15,
-      borderRadius: 5,
-      width:0.2*contentWidth,
+      borderRadius: 10,
+      width:0.4*contentWidth,
       elevation: 10,
-      backgroundColor: Colors.primary.text,
     },
     alertButton: {
       flex: 1,
@@ -135,10 +134,10 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       // justifyContent: 'center',
       // alignContent:'center',
+      textAlign:"center",
       borderRadius: 10,
-      width:0.2*contentWidth,
+      // width:0.5*contentWidth,
       elevation: 10,
-      backgroundColor: "white",
       height: 35,
     }
   });
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
     fillShadowGradientToOpacity:0.5,
     // color: Colors.secondary.text,
     color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
-    barPercentage: 1,
+    barPercentage: 0.75,
     // useShadowColorFromDataset: true // optional
   };
   
