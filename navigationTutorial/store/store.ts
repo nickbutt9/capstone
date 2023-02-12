@@ -1,6 +1,6 @@
 import { configureStore, combineReducers, AnyAction } from '@reduxjs/toolkit';
-
 import bleSlice from './ble/bleSlice';
+
 
 const combinedReducer = combineReducers({
     ble: bleSlice,

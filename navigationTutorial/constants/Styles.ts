@@ -155,6 +155,14 @@ const textStyles = StyleSheet.create({
     },
   });
 
+  export const toastStyles = {
+    default: {
+        width: screenWidth / 1.2,
+        duration: 3000,
+        bottom: -20,
+    },
+};
+
   export const chartConfig = {
     backgroundGradientFromOpacity:0,
     backgroundGradientToOpacity:0,
@@ -180,5 +188,8 @@ export const styles = {
     },
     shape: {
       ...shapeStyles,
-    }
+    },
+    toast: {
+      ...toastStyles,
+    },
 };

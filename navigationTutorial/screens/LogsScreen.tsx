@@ -24,9 +24,7 @@ export default function LogsScreen() {
           onPressArrowRight={(addMonth: () => any) => addMonth()}
           onDayPress={(day: any) => {
             console.log('selected day', day);
-          }}>
-
-        </Calendar>
+          }}/>
       </View>
     </SafeAreaView >
   );

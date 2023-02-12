@@ -21,6 +21,9 @@ import LogsScreen from '../screens/LogsScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
+import store from '../store/store';
+import { Provider } from 'react-redux';
+
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
