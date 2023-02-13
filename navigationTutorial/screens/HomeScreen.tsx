@@ -16,7 +16,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   let alertView;
 
-  if (deviceConnected) {
+  if (!deviceConnected) {
     
     alertView = 
       <View style={styles.container.alertContainer}>
@@ -25,11 +25,11 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.text.whiteTexts}> Device Not Connected </Text>
         </View>
         {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => console.log('Connect')}>
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => {navigation.navigate('BLE'); console.log('Connect');}}>
           <Text style={{fontWeight:'bold'}}>Connect</Text>
         </Pressable>
       </View>
-  } else if (calibrated){
+  } else if (!calibrated){
     alertView = 
       <View style={styles.container.alertContainer}>
         <FontAwesome name="exclamation-triangle" size={25} color='white' />

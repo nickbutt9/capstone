@@ -11,6 +11,7 @@ import 'expo-dev-client';
 import Providers from './navigation';
 import store from './store/store'
 import { Provider } from 'react-redux';
+import BLEManager from './components/BLEManager/BLEManager';
 
 export default function App() {
   console.log("App Refreshed")
@@ -25,6 +26,7 @@ export default function App() {
         <NativeBaseProvider>
           <PopupProvider>
             <SafeAreaProvider >
+              <BLEManager />
               <Navigation colorScheme={colorScheme} />
               <StatusBar />
             </SafeAreaProvider>

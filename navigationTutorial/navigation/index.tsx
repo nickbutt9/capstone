@@ -14,10 +14,12 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import SettingsModal from '../screens/SettingsModal';
 import ProfileModal from '../screens/ProfileModal';
+import BLEModal from '../screens/BLEModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PressureScreen from '../screens/PressureScreen';
 import LogsScreen from '../screens/LogsScreen';
+import TestScreen from '../screens/TestScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -49,6 +51,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Settings" component={SettingsModal} />
         <Stack.Screen name="Profile" component={ProfileModal} />
+        <Stack.Screen name="BLE" component={BLEModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -78,31 +81,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerLeft:() => (
             // <HeaderContents />
-            <Pressable
-              onPress={() => navigation.navigate('Profile')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="user"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginLeft: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Profile')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}>
+              <FontAwesome name="user" size={25} color={Colors[colorScheme].text} style={{ marginLeft: 15 }}/>
             </Pressable>
           ),
           headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Settings')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="gear"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Settings')} style={({ pressed }) => ({ opacity: pressed ? 0.5 : 1,})}>
+              <FontAwesome name="gear" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }}/>
             </Pressable>
           ),
         })}
@@ -116,31 +101,13 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />,
           headerStyle: {backgroundColor: Colors.grey.text},
           headerLeft:() => (
-            <Pressable
-              onPress={() => navigation.navigate('Profile')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="user"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginLeft: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Profile')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}>
+              <FontAwesome name="user" size={25} color={Colors[colorScheme].text} style={{ marginLeft: 15 }}/>
             </Pressable>
           ),
           headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Settings')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="gear"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Settings')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}> 
+              <FontAwesome name="gear" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }}/>
             </Pressable>
           ),
         })}
@@ -154,33 +121,25 @@ function BottomTabNavigator() {
           // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
           headerLeft:() => (
-            <Pressable
-              onPress={() => navigation.navigate('Profile')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="user"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginLeft: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Profile')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}>
+              <FontAwesome name="user" size={25} color={Colors[colorScheme].text} style={{ marginLeft: 15 }}/>
             </Pressable>
           ),
           headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Settings')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="gear"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
+            <Pressable onPress={() => navigation.navigate('Settings')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}>
+              <FontAwesome name="gear" size={25} color={Colors[colorScheme].text} style={{ marginRight: 15 }}/>
             </Pressable>
           ),
+        })}
+      />
+      <BottomTab.Screen
+        name="Test"
+        component={TestScreen}
+        options={({ navigation }: RootTabScreenProps<'Test'>) => ({
+          headerTitle:"",
+          headerStyle: {backgroundColor: Colors.grey.text},
+          // headerShown: false,
+          tabBarIcon: ({ color }) => <TabBarIcon name="mixcloud" color={color} />,
         })}
       />
     </BottomTab.Navigator>

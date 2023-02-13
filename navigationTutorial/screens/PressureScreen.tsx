@@ -17,7 +17,7 @@ export default function PressureScreen() {
         <View style={styles.seperator.seperator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
         <View style={styles.container.chartsContainer}>
           <Text style={styles.text.subtitle}>Pressure</Text>
-          <Text style={styles.text.texts}>Today</Text>
+          <Text style={styles.text.plain}>Today</Text>
           <LineChart data={lineData} width={chartWidth+30} height={chartHeight} chartConfig={chartConfig} bezier verticalLabelRotation={0} fromZero withVerticalLines={false} style={{marginLeft: -10}}/>
         </View>
         <View style={styles.container.chartsContainer}>

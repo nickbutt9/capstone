@@ -1,12 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import Colors from './Colors'
 
-const screenWidth = Dimensions.get("window").width;
+export const screenWidth = Dimensions.get("window").width;
 const contentWidth = 0.9*screenWidth;
 const chartHeight = 220;
 const diameter = contentWidth/4;
 
-const containerStyles = StyleSheet.create({
+export const containerStyles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
@@ -67,16 +67,23 @@ const containerStyles = StyleSheet.create({
   },
 })
 
-const seperatorStyles = StyleSheet.create({
+export const seperatorStyles = StyleSheet.create({
   seperator: {
     marginVertical: 20,
     height: 1,
     width: '80%',
     alignSelf:'center'
   },
+  spacedBetween: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
 })
 
-const shapeStyles = StyleSheet.create({
+export const shapeStyles = StyleSheet.create({
   circles: {
     width: diameter,
     height: diameter,
@@ -90,7 +97,7 @@ const shapeStyles = StyleSheet.create({
   },
 })
 
-const buttonStyles = StyleSheet.create({
+export const buttonStyles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -113,7 +120,7 @@ const buttonStyles = StyleSheet.create({
   },
 })
 
-const textStyles = StyleSheet.create({
+export const textStyles = StyleSheet.create({
     
     title: {
       fontSize: 30,
@@ -132,7 +139,7 @@ const textStyles = StyleSheet.create({
       paddingTop:10,
       paddingBottom:5,
     },
-    texts: {
+    plain: {
       fontSize: 12,
       fontWeight: '400',
       alignSelf: 'flex-start',
@@ -153,25 +160,65 @@ const textStyles = StyleSheet.create({
       fontWeight: '500',
       marginTop:10
     },
+    emptyText: {
+      marginVertical: 15,
+      color: 'grey',
+      fontWeight: 'bold'
+    },
   });
 
-  export const toastStyles = {
-    default: {
-        width: screenWidth / 1.2,
-        duration: 3000,
-        bottom: -20,
-    },
+export const toastStyles = {
+  default: {
+      width: screenWidth / 1.2,
+      duration: 3000,
+      bottom: -20,
+  },
 };
 
-  export const chartConfig = {
-    backgroundGradientFromOpacity:0,
-    backgroundGradientToOpacity:0,
-    fillShadowGradientFromOpacity:0.5,
-    fillShadowGradientToOpacity:0.5,
-    // color: Colors.secondary.text,
-    color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
-    barPercentage: 0.75,
-  };
+export const cardStyles = StyleSheet.create({
+  shadow: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'white',
+      width: '70%',
+      borderRadius: 15,
+      shadowColor: 'grey',
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: 1,
+      shadowRadius: 8,
+      elevation: 8,
+      paddingLeft: 14,
+      paddingRight: 14,
+      marginTop: 6,
+      marginBottom: 6,
+      marginLeft: 16,
+      marginRight: 16,
+  }
+});
+
+export const chartConfig = {
+  backgroundGradientFromOpacity:0,
+  backgroundGradientToOpacity:0,
+  fillShadowGradientFromOpacity:0.5,
+  fillShadowGradientToOpacity:0.5,
+  // color: Colors.secondary.text,
+  color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
+  barPercentage: 0.75,
+};
+
+export const divStyles = StyleSheet.create({
+  centered: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%'
+  },
+  row: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      flexDirection: 'row'
+  }
+});
   
 export const styles = {
     container: {
@@ -192,4 +239,10 @@ export const styles = {
     toast: {
       ...toastStyles,
     },
+    card: {
+      ...cardStyles,
+    },
+    div: {
+      ...divStyles,
+    }
 };
