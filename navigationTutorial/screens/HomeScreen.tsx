@@ -11,8 +11,8 @@ const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9*screenWidth;
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const deviceConnected = false;
-  const calibrated = true;
+  const deviceConnected = true;
+  const calibrated = false;
 
   let alertView;
 
@@ -37,7 +37,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.text.whiteTexts}> Device Not Calibrated </Text>
         </View>
         {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => console.log('Calibrate')}>
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => {navigation.navigate('Calibrate'); console.log('Calibrate')}}>
           <Text style={{fontWeight:'bold'}}>Calibrate</Text>
         </Pressable>
       </View>

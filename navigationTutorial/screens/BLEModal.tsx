@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { screenWidth, styles } from '../constants/styles';
+import { screenWidth, styles } from '../constants/Styles';
 import PrimaryButton from '../components/button/PrimaryButton';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
 import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, stopDeviceScan} from '../store/ble/bleSlice';

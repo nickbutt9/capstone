@@ -15,6 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import SettingsModal from '../screens/SettingsModal';
 import ProfileModal from '../screens/ProfileModal';
 import BLEModal from '../screens/BLEModal';
+import CalibrateModal from '../screens/CalibrateModal';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PressureScreen from '../screens/PressureScreen';
@@ -52,6 +53,7 @@ function RootNavigator() {
         <Stack.Screen name="Settings" component={SettingsModal} />
         <Stack.Screen name="Profile" component={ProfileModal} />
         <Stack.Screen name="BLE" component={BLEModal} />
+        <Stack.Screen name="Calibrate" component={CalibrateModal} />
       </Stack.Group>
     </Stack.Navigator>
   );
