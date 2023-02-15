@@ -92,6 +92,14 @@ export const shapeStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems:'center'
   },
+  bigCircle: {
+    width: 250,
+    height: 250,
+    borderRadius: 250 / 2,
+    backgroundColor: Colors.primary.text,
+    justifyContent: 'center',
+    alignItems:'center'
+  },
   gauge: {
     marginBottom:-50,
   },

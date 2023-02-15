@@ -13,9 +13,10 @@ export default class CalibrationModal extends Component {
 
   state = {
     titleText: "Secure Your Prosthetic",
-    buttonText: "Prosthetic Secured"
+    buttonText: "Prosthetic Secured",
+    filler: <View style={{height:250}}/>
   }
-
+  
   onPress = () => {
     if (this.state.titleText === "Secure Your Prosthetic") {
       console.log('Stand Up'),
@@ -27,7 +28,8 @@ export default class CalibrationModal extends Component {
       console.log('Calibrating'),
         this.setState({
           titleText: "Calibrating",
-          buttonText: "Cancel"
+          buttonText: "Please Wait",
+          filler: <ActivityIndicator size={250} color={Colors.primary.text} />
         })
     } else if (this.state.titleText === "Calibrating"){
       console.log('Cancel')
@@ -37,11 +39,11 @@ export default class CalibrationModal extends Component {
 
   render(): React.ReactNode {
     return (
-      <View style={styles.container.plainContainer}>
+      <View style={[styles.container.plainContainer]}>
         <Text style={styles.text.title}>{this.state.titleText}</Text>
         <View style={styles.seperator.seperator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-        <ActivityIndicator size={100} color={Colors.primary.text} />
-        <Pressable style={[{ backgroundColor: Colors.primary.text }, styles.button.button]} onPress={this.onPress}>
+        {this.state.filler}
+        <Pressable style={[{ backgroundColor: Colors.primary.text, marginTop:25}, styles.button.button]} onPress={this.onPress}>
           <Text style={styles.text.whiteTexts}>{this.state.buttonText}</Text>
         </Pressable>
       </View>

@@ -119,7 +119,7 @@ const BLEScreen = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            <CheckmarkCircle/>
+            <CheckmarkCircle extraStyle={{marginTop:25}}/>
 
             {/* <View style={styles.shape.circles}>
                 <FontAwesome name="check" size={25} color='white' />
@@ -127,15 +127,15 @@ const BLEScreen = () => {
             {(scannedDevices?.length > 0) &&
                 <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>
             }
-            <FlatList
+            {/* <FlatList
                 style={{ height: '100%' }}
                 contentContainerStyle={{ width: '100%', justifyContent: 'center' }}
                 data={scannedDevices}
                 renderItem={({ item }) => (
                     <DeviceItem device={item} />
                 )}
-            />
-            <Pressable style={[{ backgroundColor: Colors.primary.text, marginBottom: 15 }, styles.button.button]} onPress={scanPressHandler}>
+            /> */}
+            <Pressable style={[{ backgroundColor: Colors.primary.text, marginTop: 25 }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>
         </View>
