@@ -6,13 +6,14 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as Progress from 'react-native-progress'
 import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
+import MainButton from '../components/button/MainButton';
 
 const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9*screenWidth;
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
-  const deviceConnected = true;
-  const calibrated = false;
+  const deviceConnected = false;
+  const calibrated = true;
 
   let alertView;
 
@@ -37,7 +38,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.text.whiteTexts}> Device Not Calibrated </Text>
         </View>
         {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => {navigation.navigate('Calibrate'); console.log('Calibrate')}}>
+        <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.grey.text : 'white'}, styles.button.alertButton]} onPress={() => {navigation.navigate('Calibration'); console.log('Calibrate')}}>
           <Text style={{fontWeight:'bold'}}>Calibrate</Text>
         </Pressable>
       </View>
@@ -52,6 +53,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <View style={styles.container.homeContainer}>
         <Text style={styles.text.subtitle}>Distal End Pressure</Text>
           <AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={40} tintColor={Colors.primary.text} onAnimationComplete={() => console.log('onAnimationComplete')} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge}/>
+          
           <Pressable style={({pressed}) => [{backgroundColor: pressed ? Colors.secondary.text : Colors.primary.text}, styles.button.button]} onPress={() => console.log('Add')}>
             <Text style={styles.text.whiteTexts}>Add a sock</Text>
           </Pressable>

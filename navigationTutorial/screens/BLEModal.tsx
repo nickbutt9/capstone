@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { screenWidth, styles } from '../constants/Styles';
-import PrimaryButton from '../components/button/PrimaryButton';
+import MainButton from '../components/button/MainButton';
+// import PrimaryButton from '../components/button/PrimaryButton';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, stopDeviceScan} from '../store/ble/bleSlice';
+import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, stopDeviceScan } from '../store/ble/bleSlice';
 import { IBLEDevice } from '../store/ble/bleSlice.contracts';
-import { Icon, useToast } from 'native-base';
+import { Icon, useToast, Pressable } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
+import { CheckmarkCircle } from '../components/Components';
+import { FontAwesome } from '@expo/vector-icons';
+// import PulseLoader from 'react-native-pulse-loader'
+
 interface DeviceItemProps {
     device: IBLEDevice | null
 }
@@ -19,7 +24,7 @@ const DeviceItem = (props: DeviceItemProps) => {
     const toast = useToast();
     const connectHandler = async () => {
         if (isConnecting) return;
-        if (device?.id){
+        if (device?.id) {
             setIsConnecting(true);
             const result = await dispatch(connectDeviceById({ id: device?.id }))
             if (result.meta.requestStatus === 'fulfilled') {
@@ -44,7 +49,7 @@ const DeviceItem = (props: DeviceItemProps) => {
         }
     }
     return (
-        <TouchableOpacity style={{ ...styles.card.shadow, width: screenWidth*0.8, backgroundColor: (connectedDevice?.id === device?.id)? 'green' : 'white' }} onPress={connectHandler}>
+        <TouchableOpacity style={{ ...styles.card.shadow, width: screenWidth * 0.8, backgroundColor: (connectedDevice?.id === device?.id) ? 'green' : 'white' }} onPress={connectHandler}>
             <Text style={{ ...styles.text.plain, paddingVertical: 10 }}>{device?.name}</Text>
         </TouchableOpacity>
     )
@@ -106,13 +111,19 @@ const BLEScreen = () => {
         }
     }, [adapterState, bleDevice, isScanning]);
     return (
-        <View style={styles.seperator.spacedBetween}>
+        <View style={[styles.container.plainContainer]}>
+            <Text style={styles.text.title}>{stateText}</Text>
             <View style={styles.card.shadow}>
                 <View style={styles.div.row}>
-                    <Text style={{ ...styles.text.plain, color: Colors.primary.text }}>{stateText}</Text>
-                    <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7}/>
+                    <Text style={{ ...styles.text.plain, color: Colors.primary.text, alignSelf: 'center' }}>{stateText}</Text>
+                    <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
+            <CheckmarkCircle/>
+
+            {/* <View style={styles.shape.circles}>
+                <FontAwesome name="check" size={25} color='white' />
+            </View> */}
             {(scannedDevices?.length > 0) &&
                 <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>
             }
@@ -123,8 +134,10 @@ const BLEScreen = () => {
                 renderItem={({ item }) => (
                     <DeviceItem device={item} />
                 )}
-                />
-            <PrimaryButton text={buttonText} style={{ marginBottom: 10 }} onPress={scanPressHandler} loading={isScanning} />
+            />
+            <Pressable style={[{ backgroundColor: Colors.primary.text, marginBottom: 15 }, styles.button.button]} onPress={scanPressHandler}>
+                <Text style={styles.text.whiteTexts}>{buttonText}</Text>
+            </Pressable>
         </View>
     );
 };

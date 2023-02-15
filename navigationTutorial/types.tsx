@@ -19,7 +19,7 @@ export type RootStackParamList = {
   Modal: undefined;
   Profile:undefined;
   BLE:undefined;
-  Calibrate:undefined;
+  Calibration:undefined;
   NotFound: undefined;
 };
 

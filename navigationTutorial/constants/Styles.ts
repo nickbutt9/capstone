@@ -101,10 +101,10 @@ export const buttonStyles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 15,
+    padding: 15,
     borderRadius: 10,
-    width:0.4*contentWidth,
-    elevation: 10,
+    // width:0.4*contentWidth,
+    // elevation: 10,
   },
   alertButton: {
     flex: 1,
@@ -115,7 +115,7 @@ export const buttonStyles = StyleSheet.create({
     textAlign:"center",
     borderRadius: 10,
     // width:0.5*contentWidth,
-    elevation: 10,
+    // elevation: 10,
     height: 35,
   },
 })
@@ -180,19 +180,17 @@ export const cardStyles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'white',
-      width: '70%',
+      // width: '50%',
+      paddingHorizontal:10,
       borderRadius: 15,
-      shadowColor: 'grey',
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 1,
-      shadowRadius: 8,
-      elevation: 8,
+      // shadowColor: 'grey',
+      // shadowOffset: { width: 0, height: 0 },
+      // shadowOpacity: 1,
+      // shadowRadius: 8,
+      // elevation: 8,
       paddingLeft: 14,
       paddingRight: 14,
-      marginTop: 6,
-      marginBottom: 6,
-      marginLeft: 16,
-      marginRight: 16,
+      marginTop:15,
   }
 });
 
@@ -215,8 +213,8 @@ export const divStyles = StyleSheet.create({
   row: {
       alignItems: 'center',
       justifyContent: 'center',
-      width: '100%',
-      flexDirection: 'row'
+      // width: '100%',
+      flexDirection: 'row',
   }
 });
   
