@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { screenWidth, styles } from '../constants/Styles';
 import MainButton from '../components/button/MainButton';
 // import PrimaryButton from '../components/button/PrimaryButton';
@@ -11,6 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
+
 // import PulseLoader from 'react-native-pulse-loader'
 
 interface DeviceItemProps {
@@ -58,22 +59,27 @@ const BLEScreen = () => {
     const [buttonText, setButtonText] = useState('Start Scan');
     const [isScanning, setIsScanning] = useState(false);
     const [iconName, setIconName] = useState('bluetooth-disabled');
+    const [filler, setFiller] = useState(<View/>)
     const [stateText, setStateText] = useState('');
     const bleDevice = useAppSelector(selectConnectedDevice);
     const adapterState = useAppSelector(selectAdapterState);
     const scannedDevices = useAppSelector(selectScannedDevices).devices;
     const toast = useToast();
     const dispatch = useAppDispatch();
+
+
     const scanPressHandler = () => {
         if (isScanning) {
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
             setButtonText('Start Scan');
+            setFiller(<View/>)
         }
         else if (adapterState.toLowerCase() === 'poweredon') {
             dispatch(scanBleDevices());
             setIsScanning(true);
             setButtonText('Stop Scan');
+            setFiller(<View style={{marginTop:125}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
         }
         else {
             toast.show({
@@ -89,9 +95,11 @@ const BLEScreen = () => {
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
             setButtonText('Start Scan');
+            setFiller(<View style={{marginTop:125}}><CheckmarkCircle/></View>)
         }
         else if (isScanning) {
             setStateText('Scanning...')
+            // filler = <ActivityIndicator size={250} color={Colors.primary.text} />
         }
         else {
             switch (adapterState.toLowerCase()) {
@@ -110,16 +118,19 @@ const BLEScreen = () => {
             }
         }
     }, [adapterState, bleDevice, isScanning]);
+
+
     return (
         <View style={[styles.container.plainContainer]}>
-            <Text style={styles.text.title}>{stateText}</Text>
+            {/* <Text style={styles.text.title}>{stateText}</Text> */}
             <View style={styles.card.shadow}>
                 <View style={styles.div.row}>
                     <Text style={{ ...styles.text.plain, color: Colors.primary.text, alignSelf: 'center' }}>{stateText}</Text>
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            <CheckmarkCircle extraStyle={{marginTop:25}}/>
+            {filler}
+            
 
             {/* <View style={styles.shape.circles}>
                 <FontAwesome name="check" size={25} color='white' />
@@ -127,15 +138,14 @@ const BLEScreen = () => {
             {(scannedDevices?.length > 0) &&
                 <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>
             }
-            {/* <FlatList
-                style={{ height: '100%' }}
+            <FlatList
                 contentContainerStyle={{ width: '100%', justifyContent: 'center' }}
                 data={scannedDevices}
                 renderItem={({ item }) => (
                     <DeviceItem device={item} />
                 )}
-            /> */}
-            <Pressable style={[{ backgroundColor: Colors.primary.text, marginTop: 25 }, styles.button.button]} onPress={scanPressHandler}>
+            />
+            <Pressable style={[{ backgroundColor: Colors.primary.text, marginBottom: 100 }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>
         </View>
