@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   if (!deviceConnected){
     return (
-      <View style={styles.container.plainContainer}>
+      <View style={[styles.container.plainContainer, {marginTop:15}]}>
         <View style={styles.container.alertContainer}>
           <FontAwesome name="exclamation-triangle" size={25} color='white' />
           <View style={{ width: 0.6 * containerWidth, backgroundColor: Colors.primary.text }}>
