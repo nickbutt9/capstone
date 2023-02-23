@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
-
+import PulsingCircle from '../components/Components';
 // import PulseLoader from 'react-native-pulse-loader'
 
 interface DeviceItemProps {
@@ -55,7 +55,7 @@ const DeviceItem = (props: DeviceItemProps) => {
         </TouchableOpacity>
     )
 }
-const BLEScreen = () => {
+const BLEScreen: React.FC = () => {
     const [buttonText, setButtonText] = useState('Start Scan');
     const [isScanning, setIsScanning] = useState(false);
     const [iconName, setIconName] = useState('bluetooth-disabled');
@@ -79,7 +79,8 @@ const BLEScreen = () => {
             dispatch(scanBleDevices());
             setIsScanning(true);
             setButtonText('Stop Scan');
-            setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
+            // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
+            setFiller(<View style={{marginVertical:87.5}}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text}/></View>)
         }
         else {
             toast.show({
@@ -128,7 +129,7 @@ const BLEScreen = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            {/* {filler} */}
+            {filler}
 
             {(scannedDevices?.length > 0) &&
                 ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,

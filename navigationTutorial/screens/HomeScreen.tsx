@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   const device = useAppSelector(selectConnectedDevice);
 
-  let deviceConnected;
+  let deviceConnected = false;
   let calibrated = false;
 
   if (device?.id) { deviceConnected = true }
