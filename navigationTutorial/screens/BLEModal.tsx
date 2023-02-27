@@ -12,7 +12,6 @@ import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
 import PulsingCircle from '../components/Components';
-// import PulseLoader from 'react-native-pulse-loader'
 
 interface DeviceItemProps {
     device: IBLEDevice | null
