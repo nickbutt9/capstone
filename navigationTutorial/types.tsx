@@ -18,6 +18,8 @@ export type RootStackParamList = {
   Settings:undefined;
   Modal: undefined;
   Profile:undefined;
+  BLE:undefined;
+  Calibration:undefined;
   NotFound: undefined;
 };
 
@@ -30,6 +32,7 @@ export type RootTabParamList = {
   Home: undefined;
   Pressure: undefined;
   Logs: undefined;
+  Test: undefined
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

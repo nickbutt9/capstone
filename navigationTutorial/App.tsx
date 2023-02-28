@@ -1,10 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NativeBaseProvider } from "native-base";
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import { PopupProvider } from 'react-native-popup-view';
+
+import 'expo-dev-client';
+import Providers from './navigation';
+import store from './store/store'
+import { Provider } from 'react-redux';
+import BLEManager from './components/BLEManager/BLEManager';
 
 export default function App() {
   console.log("App Refreshed")
@@ -15,12 +22,17 @@ export default function App() {
     return null;
   } else {
     return (
-      <PopupProvider>
-        <SafeAreaProvider >
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </SafeAreaProvider>
-      </PopupProvider>
+      <Provider store={store}>
+        <NativeBaseProvider>
+          <PopupProvider>
+            <SafeAreaProvider >
+              <BLEManager />
+              <Navigation colorScheme={colorScheme} />
+              <StatusBar />
+            </SafeAreaProvider>
+          </PopupProvider>
+        </NativeBaseProvider>
+      </Provider>
     );
   }
 }
