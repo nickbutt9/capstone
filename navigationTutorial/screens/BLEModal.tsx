@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Button, FlatList, Text, TouchableOpacity, View, PermissionsAndroid } from 'react-native';
 import { screenWidth, styles } from '../constants/Styles';
 import MainButton from '../components/button/MainButton';
 // import PrimaryButton from '../components/button/PrimaryButton';
@@ -12,6 +12,28 @@ import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
 import PulsingCircle from '../components/Components';
+
+const requestBluetoothPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        {
+          title: 'BLuetooth Permission Required',
+          message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
+        //   buttonNeutral: 'Ask Me Later',
+        //   buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use Bluetooth Scan');
+      } else {
+        console.log('Bluetooth Scan permission denied');
+      }
+    } catch (err) {
+      console.warn("Error with BLE Permission =", err);
+    }
+  };
 
 interface DeviceItemProps {
     device: IBLEDevice | null
@@ -128,6 +150,7 @@ const BLEScreen: React.FC = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
+            <Button title="BLE Permission" onPress={requestBluetoothPermission} />
             {filler}
 
             {(scannedDevices?.length > 0) &&
