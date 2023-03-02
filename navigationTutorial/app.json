@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "navigationTutorial",
+    "owner": "bme23-capstone",
     "slug": "navigationTutorial",
     "version": "1.0.0",
     "orientation": "portrait",
