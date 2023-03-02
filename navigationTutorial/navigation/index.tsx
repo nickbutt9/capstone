@@ -20,19 +20,21 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
 import PressureScreen from '../screens/PressureScreen';
 import LogsScreen from '../screens/LogsScreen';
-import TestScreen from '../screens/TestScreen';
+import { TestScreen } from '../screens/TestScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 import store from '../store/store';
 import { Provider } from 'react-redux';
 
+import BLEManager from '../components/BLEManager/BLEManager';
+
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
     <NavigationContainer
-
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      linking={LinkingConfiguration}>
+      {/* theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}> */}
+      <BLEManager />
       <RootNavigator />
     </NavigationContainer>
   );

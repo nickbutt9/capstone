@@ -12,6 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "plugins": ["@config-plugins/react-native-ble-plx"],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -27,7 +28,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.paulchang04.navigationTutorial"
+      "package": "com.paulchang04.navigationTutorial",
+      "permission":["android.permission.BLUETOOTH_SCAN", "android.permission.ACCESS_FINE_LOCATION"]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
