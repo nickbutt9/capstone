@@ -2,7 +2,7 @@
   "expo": {
     "name": "navigationTutorial",
     "owner": "bme23-capstone",
-    "slug": "navigationTutorial",
+    "slug": "capstone-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,7 +13,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "plugins": ["@config-plugins/react-native-ble-plx"],
+    "plugins": [
+      "@config-plugins/react-native-ble-plx"
+    ],
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -30,14 +32,22 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.paulchang04.navigationTutorial",
-      "permission":["android.permission.BLUETOOTH_SCAN", "android.permission.ACCESS_FINE_LOCATION"]
+      "permission": [
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "d3f6bd65-f785-42d2-9d9e-8599f7f27808"
+        "projectId": "859924e9-9cc4-41b2-9cba-8bcb4ee85ba1"
       }
     }
   }
