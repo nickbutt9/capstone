@@ -150,7 +150,7 @@ const BLEScreen: React.FC = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            {/* <Button title="BLE Permission" onPress={requestBluetoothPermission} /> */}
+            <Button title="BLE Permission" onPress={requestBluetoothPermission} />
 
             {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text> */}
 
