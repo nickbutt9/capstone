@@ -18,7 +18,7 @@ export const scanBleDevices = createAsyncThunk('ble/scanBleDevices', async (_, t
                 console.log('startDeviceScan error: ', error);
                 throw new Error(error.toString());
             }
-            if (scannedDevice && scannedDevice.name?.includes('')) {
+            if (scannedDevice && scannedDevice.name?.includes('BLE_SERVER')) {
                 thunkAPI.dispatch(addScannedDevice({ device: toBLEDeviceVM(scannedDevice) }));
             }
         });

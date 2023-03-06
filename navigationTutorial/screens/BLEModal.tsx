@@ -12,6 +12,7 @@ import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
 import PulsingCircle from '../components/Components';
+import { PulseIndicator } from '../components/PulseIndicator';
 
 const requestBluetoothPermission = async () => {
     try {
@@ -101,7 +102,8 @@ const BLEScreen: React.FC = () => {
             setIsScanning(true);
             setButtonText('Stop Scan');
             // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
-            setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
+            // setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
+            setFiller(<View style={{ marginVertical: 62.5 }}><PulseIndicator/></View>)
         }
         else {
             toast.show({
@@ -150,7 +152,7 @@ const BLEScreen: React.FC = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            <Button title="BLE Permission" onPress={requestBluetoothPermission} />
+            {/* <Button title="BLE Permission" onPress={requestBluetoothPermission} /> */}
 
             {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text> */}
 
