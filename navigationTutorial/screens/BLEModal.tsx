@@ -15,25 +15,25 @@ import PulsingCircle from '../components/Components';
 
 const requestBluetoothPermission = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-        {
-          title: 'BLuetooth Permission Required',
-          message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
-        //   buttonNeutral: 'Ask Me Later',
-        //   buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use Bluetooth Scan');
-      } else {
-        console.log('Bluetooth Scan permission denied');
-      }
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+            {
+                title: 'BLuetooth Permission Required',
+                message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
+                //   buttonNeutral: 'Ask Me Later',
+                //   buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+            },
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('You can use Bluetooth Scan');
+        } else {
+            console.log('Bluetooth Scan permission denied');
+        }
     } catch (err) {
-      console.warn("Error with BLE Permission =", err);
+        console.warn("Error with BLE Permission =", err);
     }
-  };
+};
 
 interface DeviceItemProps {
     device: IBLEDevice | null
@@ -80,7 +80,7 @@ const BLEScreen: React.FC = () => {
     const [buttonText, setButtonText] = useState('Start Scan');
     const [isScanning, setIsScanning] = useState(false);
     const [iconName, setIconName] = useState('bluetooth-disabled');
-    const [filler, setFiller] = useState(<View style={{height:375}}/>)
+    const [filler, setFiller] = useState(<View style={{ height: 375 }} />);
     const [stateText, setStateText] = useState('');
     const bleDevice = useAppSelector(selectConnectedDevice);
     const adapterState = useAppSelector(selectAdapterState);
@@ -94,14 +94,14 @@ const BLEScreen: React.FC = () => {
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
             setButtonText('Start Scan');
-            setFiller(<View style={{height:375}}/>)
+            setFiller(<View style={{ height: 375 }} />)
         }
         else if (adapterState.toLowerCase() === 'poweredon') {
             dispatch(scanBleDevices());
             setIsScanning(true);
             setButtonText('Stop Scan');
             // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
-            setFiller(<View style={{marginVertical:87.5}}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text}/></View>)
+            setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
         }
         else {
             toast.show({
@@ -117,7 +117,7 @@ const BLEScreen: React.FC = () => {
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
             setButtonText('Start Scan');
-            setFiller(<View style={{marginVertical:62.5}}><CheckmarkCircle/></View>)
+            setFiller(<View style={{ marginVertical: 62.5 }}><CheckmarkCircle /></View>)
         }
         else if (isScanning) {
             setStateText('Scanning...')
@@ -151,12 +151,17 @@ const BLEScreen: React.FC = () => {
                 </View>
             </View>
             <Button title="BLE Permission" onPress={requestBluetoothPermission} />
-            {filler}
 
-            {(scannedDevices?.length > 0) &&
-                ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
-                <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)}/>])
-            }
+            {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text> */}
+
+            {scannedDevices?.length == 0 ? (filler) : 
+            ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
+            <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])}
+
+            {/* {(scannedDevices?.length > 0) &&
+            ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
+            <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])} */}
+
             <Pressable style={[{ backgroundColor: Colors.primary.text, marginBottom: 100 }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>

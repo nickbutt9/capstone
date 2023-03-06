@@ -6,14 +6,13 @@ import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as Progress from 'react-native-progress'
 import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
-import MainButton from '../components/button/MainButton';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
 import { BleError, BleManager, Characteristic, Subscription } from 'react-native-ble-plx';
 
 const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9 * screenWidth;
-const bleManager = new BleManager();
+// const bleManager = new BleManager();
 
 
 
