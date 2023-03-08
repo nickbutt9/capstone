@@ -36,6 +36,7 @@ export const connectDeviceById = createAsyncThunk('ble/connectDeviceById', async
         const deviceChars = await bleManager.discoverAllServicesAndCharacteristicsForDevice(id);
         const services = await deviceChars.services();
         const serviceUUIDs = services.map(service => service.uuid);
+        console.log("ServiceUUIDs: " + serviceUUIDs)
         return toBLEDeviceVM({ ...device, serviceUUIDs });
     } catch (error: any) {
         throw new Error(error.toString);
