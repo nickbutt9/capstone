@@ -53,42 +53,40 @@ export const TestScreen = (props: { navigation: any }) => {
         if (characteristic?.value) {
             // console.log("Characteristics: " + characteristic.value)
             const res = Buffer.from(characteristic.value, 'base64').readFloatLE();
-            // console.log("Res: " + res)
+            console.log("Pressure: " + res)
             setPressure(res);
         } else { console.log("ERROR for pressure"); console.log(bleError) }
     }
     const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
         if (characteristic?.value) {
-
+            console.log(characteristic.value);
             // Convert base64 string to byte array
             const byteArray = new Uint8Array(Buffer.from(characteristic.value, 'base64'));
-
+            console.log(byteArray);
             // Extract bytes for each float and convert to float values
             const dataView = new DataView(byteArray.buffer);
             const x = dataView.getFloat32(0, true); // offset 0, little-endian byte order
             const y = dataView.getFloat32(4, true); // offset 4, little-endian byte order
             const z = dataView.getFloat32(8, true); // offset 8, little-endian byte order
-
-            console.log(x, y, z); // Output: 3.14 6.28 9.42
-            const array = [x,y,z]
-
+            
+            const array = [x,y,z];
+            // console.log(array);
             if (characteristic?.uuid === bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID) {
-                console.log("Magnitude Characteristics: " + array);
+                // console.log("Magnitude Characteristics: " + characteristic.uuid);
+                console.log("Magnitude: " + array)
                 setMagnitude(array);
-            } else { console.log("ERROR for magnitude"); console.log(bleError); }
-
-            if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
-                console.log("Acceleration Characteristics: " + array);
+            } else if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
+                // console.log("Acceleration Characteristics: " + characteristic.uuid);
                 // console.log("Res: " + res)
+                console.log("Acceleration: " + array)
                 setAcceleration(array);
-            } else { console.log("ERROR for acceleration"); console.log(bleError); }
-
-            if (characteristic?.uuid === bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID) {
-                console.log("Angular Velocity Characteristics: " + array);
+            } else if (characteristic?.uuid === bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID) {
+                // console.log("Angular Velocity Characteristics: " + characteristic.uuid);
+                console.log("Angular Velocity: " + array)
                 setAngularVel(array);
-            } else { console.log("ERROR for angular velocity"); console.log(bleError); }
+            } else { console.log("ERROR!"); console.log(bleError); }
         } else {
-            console.log("ERROR for imu"); console.log(bleError);
+            console.log("ERROR for IMU"); console.log(bleError);
         }
     }
 
@@ -102,21 +100,24 @@ export const TestScreen = (props: { navigation: any }) => {
             magSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
             accSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
             gyrSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
-            // console.log("Pressure Subscription: " + pressureSubscription)
         }
         // Remove characteristic monitoring subscriptions
         return function cleanupSubscriptions() {
             if (pressureSubscription) {
                 pressureSubscription.remove();
+                console.log("remove pressure subscription")
             }
             if (magSubscription) {
                 magSubscription.remove();
+                console.log("remove magnitude subscription")
             }
-            if (pressureSubscription) {
-                pressureSubscription.remove();
+            if (accSubscription) {
+                accSubscription.remove();
+                console.log("remove acceleration subscription")
             }
-            if (pressureSubscription) {
-                pressureSubscription.remove();
+            if (gyrSubscription) {
+                gyrSubscription.remove();
+                console.log("remove angular velocity subscription")
             }
         };
     }, [props.navigation, device]);
