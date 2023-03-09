@@ -40,7 +40,7 @@ const WeightWidget = (props: WeightWidgetProps) => {
 }
 export const TestScreen = (props: { navigation: any }) => {
     const [pressure, setPressure] = useState<number | null>(null)
-    const [magnitude, setMagnitude] = useState<number[] | null>(null)
+    const [magField, setmagField] = useState<number[] | null>(null)
     const [acceleration, setAcceleration] = useState<number[] | null>(null)
     const [angularVel, setAngularVel] = useState<number[] | null>(null)
     const device = useAppSelector(selectConnectedDevice);
@@ -72,9 +72,9 @@ export const TestScreen = (props: { navigation: any }) => {
             const array = [x,y,z];
             // console.log(array);
             if (characteristic?.uuid === bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID) {
-                // console.log("Magnitude Characteristics: " + characteristic.uuid);
-                console.log("Magnitude: " + array)
-                setMagnitude(array);
+                // console.log("magField Characteristics: " + characteristic.uuid);
+                console.log("Magnetic Field: " + array)
+                setmagField(array);
             } else if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
                 // console.log("Acceleration Characteristics: " + characteristic.uuid);
                 // console.log("Res: " + res)
@@ -109,7 +109,7 @@ export const TestScreen = (props: { navigation: any }) => {
             }
             if (magSubscription) {
                 magSubscription.remove();
-                console.log("remove magnitude subscription")
+                console.log("remove magField subscription")
             }
             if (accSubscription) {
                 accSubscription.remove();
