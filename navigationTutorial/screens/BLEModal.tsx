@@ -12,6 +12,8 @@ import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
 import { FontAwesome } from '@expo/vector-icons';
 import PulsingCircle from '../components/Components';
+import { PulseIndicator } from '../components/PulseIndicator';
+import { Buffer } from 'buffer';
 
 const requestBluetoothPermission = async () => {
     try {
@@ -50,12 +52,14 @@ const DeviceItem = (props: DeviceItemProps) => {
             setIsConnecting(true);
             const result = await dispatch(connectDeviceById({ id: device?.id }))
             if (result.meta.requestStatus === 'fulfilled') {
+                console.log("Connect device fulfilled");
                 toast.show({
                     description: 'Connection successful',
                     ...styles.toast.default,
                 });
             }
             else if (result.meta.requestStatus === 'rejected') {
+                console.log("Connect device rejected");
                 toast.show({
                     description: 'Connection unsuccessful',
                     ...styles.toast.default,
@@ -101,7 +105,8 @@ const BLEScreen: React.FC = () => {
             setIsScanning(true);
             setButtonText('Stop Scan');
             // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
-            setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
+            // setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
+            setFiller(<View style={{ marginVertical: 62.5 }}><PulseIndicator/></View>)
         }
         else {
             toast.show({
@@ -139,7 +144,9 @@ const BLEScreen: React.FC = () => {
             }
         }
     }, [adapterState, bleDevice, isScanning]);
-
+    // const res = Buffer.from('(0x) 00-00-80-3f', 'base64').readFloatLE();
+    // const res = Buffer.from("00007041", 'hex').readFloatLE();
+    // console.log(res)
 
     return (
         <View style={[styles.container.plainContainer]}>
@@ -150,19 +157,20 @@ const BLEScreen: React.FC = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            <Button title="BLE Permission" onPress={requestBluetoothPermission} />
+            {/* <Button title="BLE Permission" onPress={requestBluetoothPermission} /> */}
 
-            {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text> */}
+            {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>{res}</Text> */}
 
             {scannedDevices?.length == 0 ? (filler) : 
-            ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
-            <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])}
-
+            ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center', marginTop:15 }}>Select a device below to connect.</Text>,
+            <View style={{height:345}}>
+            <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />
+            </View>])}
             {/* {(scannedDevices?.length > 0) &&
             ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
             <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])} */}
 
-            <Pressable style={[{ backgroundColor: Colors.primary.text, marginBottom: 100 }, styles.button.button]} onPress={scanPressHandler}>
+            <Pressable style={[{ backgroundColor: Colors.primary.text, width:125, }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>
         </View>
