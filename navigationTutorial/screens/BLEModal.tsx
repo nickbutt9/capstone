@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, FlatList, Text, TouchableOpacity, View, PermissionsAndroid } from 'react-native';
+import { ActivityIndicator, Button, FlatList, Text, TouchableOpacity, View, PermissionsAndroid, Platform } from 'react-native';
 import { screenWidth, styles } from '../constants/Styles';
 import MainButton from '../components/button/MainButton';
 // import PrimaryButton from '../components/button/PrimaryButton';
@@ -14,26 +14,82 @@ import { FontAwesome } from '@expo/vector-icons';
 import PulsingCircle from '../components/Components';
 import { PulseIndicator } from '../components/PulseIndicator';
 import { Buffer } from 'buffer';
+import * as ExpoDevice from "expo-device";
 
-const requestBluetoothPermission = async () => {
-    try {
-        const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-            {
-                title: 'BLuetooth Permission Required',
-                message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
-                //   buttonNeutral: 'Ask Me Later',
-                //   buttonNegative: 'Cancel',
-                buttonPositive: 'OK',
-            },
-        );
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            console.log('You can use Bluetooth Scan');
-        } else {
-            console.log('Bluetooth Scan permission denied');
+// const requestBluetoothPermission = async () => {
+//     try {
+//         const granted = await PermissionsAndroid.request(
+//             PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+//             {
+//                 title: 'BLuetooth Permission Required',
+//                 message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
+//                 //   buttonNeutral: 'Ask Me Later',
+//                 //   buttonNegative: 'Cancel',
+//                 buttonPositive: 'OK',
+//             },
+//         );
+//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+//             console.log('You can use Bluetooth Scan');
+//         } else {
+//             console.log('Bluetooth Scan permission denied');
+//         }
+//     } catch (err) {
+//         console.warn("Error with BLE Permission =", err);
+//     }
+// };
+const requestAndroid31Permissions = async () => {
+    const bluetoothScanPermission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        {
+            title: "Location Permission",
+            message: "Bluetooth Low Energy requires Location",
+            buttonPositive: "OK",
         }
-    } catch (err) {
-        console.warn("Error with BLE Permission =", err);
+    );
+    const bluetoothConnectPermission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+        {
+            title: "Location Permission",
+            message: "Bluetooth Low Energy requires Location",
+            buttonPositive: "OK",
+        }
+    );
+    const fineLocationPermission = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+            title: "Location Permission",
+            message: "Bluetooth Low Energy requires Location",
+            buttonPositive: "OK",
+        }
+    );
+
+    return (
+        bluetoothScanPermission === "granted" &&
+        bluetoothConnectPermission === "granted" &&
+        fineLocationPermission === "granted"
+    );
+};
+
+const requestPermissions = async () => {
+    if (Platform.OS === "android") {
+        if ((ExpoDevice.platformApiLevel ?? -1) < 31) {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                {
+                    title: "Location Permission",
+                    message: "Bluetooth Low Energy requires Location",
+                    buttonPositive: "OK",
+                }
+            );
+            return granted === PermissionsAndroid.RESULTS.GRANTED;
+        } else {
+            const isAndroid31PermissionsGranted =
+                await requestAndroid31Permissions();
+
+            return isAndroid31PermissionsGranted;
+        }
+    } else {
+        return true;
     }
 };
 
@@ -106,7 +162,7 @@ const BLEScreen: React.FC = () => {
             setButtonText('Stop Scan');
             // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
             // setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
-            setFiller(<View style={{ marginVertical: 62.5 }}><PulseIndicator/></View>)
+            setFiller(<View style={{ marginVertical: 62.5 }}><PulseIndicator /></View>)
         }
         else {
             toast.show({
@@ -157,20 +213,20 @@ const BLEScreen: React.FC = () => {
                     <Icon as={MaterialIcons} name={iconName} color={Colors.primary.text} size={7} />
                 </View>
             </View>
-            {/* <Button title="BLE Permission" onPress={requestBluetoothPermission} /> */}
+            <Button title="BLE Permission" onPress={requestPermissions} />
 
             {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>{res}</Text> */}
 
-            {scannedDevices?.length == 0 ? (filler) : 
-            ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center', marginTop:15 }}>Select a device below to connect.</Text>,
-            <View style={{height:345}}>
-            <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />
-            </View>])}
+            {scannedDevices?.length == 0 ? (filler) :
+                ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center', marginTop: 15 }}>Select a device below to connect.</Text>,
+                <View style={{ height: 345 }}>
+                    <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />
+                </View>])}
             {/* {(scannedDevices?.length > 0) &&
             ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
             <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])} */}
 
-            <Pressable style={[{ backgroundColor: Colors.primary.text, width:125, }, styles.button.button]} onPress={scanPressHandler}>
+            <Pressable style={[{ backgroundColor: Colors.primary.text, width: 125, }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>
         </View>
