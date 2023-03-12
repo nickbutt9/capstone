@@ -53,36 +53,36 @@ export const TestScreen = (props: { navigation: any }) => {
         if (characteristic?.value) {
             // console.log("Characteristics: " + characteristic.value)
             const res = Buffer.from(characteristic.value, 'base64').readFloatLE();
-            console.log("Pressure: " + res)
+            // console.log("Pressure: " + res)
             setPressure(res);
         } else { console.log("ERROR for pressure"); console.log(bleError) }
     }
     const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
         if (characteristic?.value) {
-            console.log(characteristic.value);
+            // console.log(characteristic.value);
             // Convert base64 string to byte array
             const byteArray = new Uint8Array(Buffer.from(characteristic.value, 'base64'));
-            console.log(byteArray);
+            // console.log(byteArray);
             // Extract bytes for each float and convert to float values
             const dataView = new DataView(byteArray.buffer);
-            const x = dataView.getFloat32(0, true); // offset 0, little-endian byte order
-            const y = dataView.getFloat32(4, true); // offset 4, little-endian byte order
-            const z = dataView.getFloat32(8, true); // offset 8, little-endian byte order
-            
-            const array = [x,y,z];
+            const x = Math.round(dataView.getFloat32(0, true)); // offset 0, little-endian byte order
+            const z = Math.round(dataView.getFloat32(8, true)); // offset 8, little-endian byte order
+            const y = Math.round(dataView.getFloat32(4, true)); // offset 4, little-endian byte order
+
+            const array = [x, y, z];
             // console.log(array);
             if (characteristic?.uuid === bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID) {
                 // console.log("magField Characteristics: " + characteristic.uuid);
-                console.log("Magnetic Field: " + array)
+                // console.log("Magnetic Field: " + array)
                 setmagField(array);
             } else if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
                 // console.log("Acceleration Characteristics: " + characteristic.uuid);
                 // console.log("Res: " + res)
-                console.log("Acceleration: " + array)
+                // console.log("Acceleration: " + array)
                 setAcceleration(array);
             } else if (characteristic?.uuid === bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID) {
                 // console.log("Angular Velocity Characteristics: " + characteristic.uuid);
-                console.log("Angular Velocity: " + array)
+                // console.log("Angular Velocity: " + array)
                 setAngularVel(array);
             } else { console.log("ERROR!"); console.log(bleError); }
         } else {
@@ -97,6 +97,9 @@ export const TestScreen = (props: { navigation: any }) => {
             console.log("Service UUID " + bleServices.sample.SAMPLE_SERVICE_UUID)
             console.log("Characteristics UUID " + bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID)
             pressureSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
+            // magSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
+            // accSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
+            // gyrSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
             magSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
             accSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
             gyrSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
@@ -126,6 +129,9 @@ export const TestScreen = (props: { navigation: any }) => {
         return (
             <View style={styles.container.plainContainer}>
                 {pressure && <WeightWidget pressure={pressure} />}
+                {magField && <Text style={styles.text.plain}> {magField.join(" ")}</Text>}
+                {acceleration && <Text style={styles.text.plain}> {acceleration.join(" ")}</Text>}
+                {angularVel && <Text style={styles.text.plain}> {angularVel.join(" ")}</Text>}
             </View>
         )
     }
