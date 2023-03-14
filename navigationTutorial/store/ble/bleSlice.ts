@@ -5,31 +5,61 @@ import { bleSliceInterface, connectDeviceByIdParams, NetworkState, toBLEDeviceVM
 import { MonitorPressure } from '../../components/BLEManager/MonitorPressure'
 import bleServices from '../../constants/bleServices';
 import { Buffer } from "buffer";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// import { useAppDispatch } from '../../hooks/hooks';
 
 const bleManager = new BleManager();
 let device: Device;
 let pressureSubscription: Subscription;
+let tempPressureArray: number[] = [];
+let finalPressureArray: number[] = [];
+const pressureKey = "@PressureKey";
+// const dispatch = useAppDispatch();
 
 const stopScan = () => {
     console.log('Stopping scan');
     bleManager.stopDeviceScan();
 };
 
+const savetoStorage = async (key: string, array: any) => {
+    try {
+        await AsyncStorage.setItem(key, JSON.stringify(array));
+        // console.log('Stored' + key);
+    } catch (e) {
+        console.log('Error saving' + key);
+    }
+}
+
 const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
+
     if (characteristic?.value) {
         // console.log("Characteristics: " + characteristic.value)
-        const res = Math.round(Buffer.from(characteristic.value, 'base64').readFloatLE());
+        let res = Math.round(Buffer.from(characteristic.value, 'base64').readFloatLE());
+        // const value = characteristic.value;
+        // setBluetoothData({ adapterState: res });
+        let average = 0;
+
         // console.log("Pressure: " + res)
-        
-        // setPressure(res);
-        // if (pressureArray.length > 5) {
-        //     // console.log("Pressure Array: " + pressureArray)
-        //     pressureArray.shift();
-        // } else {
-        //     pressureArray.push(res);
-        // }
-        // // console.log(pressureArray);
-        // savetoStorage(pressureKey, pressureArray);
+        tempPressureArray.push(res)
+
+        if (tempPressureArray.length == 10) {
+            // console.log("Pressure Array: " + pressureArray)
+            average = tempPressureArray.reduce( (p, c) => p+c ) / tempPressureArray.length;
+            tempPressureArray.shift();
+        }
+        // console.log('Temp: ', tempPressureArray);
+
+        const newAverageArray = [...finalPressureArray, average];
+
+        while (newAverageArray.length > 5) {
+            newAverageArray.shift();
+        }
+        finalPressureArray = newAverageArray;
+
+        // console.log('Final: ', finalPressureArray);
+
+        savetoStorage(pressureKey, finalPressureArray);
     } else { console.log("ERROR for pressure"); console.log(bleError) }
 }
 
@@ -65,7 +95,7 @@ export const connectDeviceById = createAsyncThunk('ble/connectDeviceById', async
     }
 });
 
-export const startPressureMonitoring = () => async (dispatch: any) =>{
+export const startPressureMonitoring = () => async (dispatch: any) => {
     try {
         console.log('Monitoring pressure...')
         pressureSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
@@ -111,6 +141,7 @@ const bleSlice = createSlice({
             state.adapterState = adapterState;
         },
         setBluetoothData: (state, action) => {
+            console.log('Setting Bluetooth Data...')
             const { pressureData } = action.payload
             state.bluetoothData = pressureData;
         },

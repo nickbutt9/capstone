@@ -99,7 +99,7 @@ interface DeviceItemProps {
 const DeviceItem = (props: DeviceItemProps) => {
     const { device } = props;
     const [isConnecting, setIsConnecting] = useState(false);
-    const connectedDevice = useAppSelector(selectConnectedDevice)
+    const connectedDevice = useAppSelector(selectConnectedDevice);
     const dispatch = useAppDispatch();
     const toast = useToast();
     const connectHandler = async () => {
@@ -138,6 +138,7 @@ const DeviceItem = (props: DeviceItemProps) => {
 }
 const BLEScreen: React.FC = () => {
     const [buttonText, setButtonText] = useState('Start Scan');
+    const [buttonColor, setButtonColor] = useState(Colors.primary.text);
     const [isScanning, setIsScanning] = useState(false);
     const [iconName, setIconName] = useState('bluetooth-disabled');
     const [filler, setFiller] = useState(<View style={{ height: 375 }} />);
@@ -153,12 +154,14 @@ const BLEScreen: React.FC = () => {
         if (isScanning) {
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
+            setButtonColor(Colors.primary.text);
             setButtonText('Start Scan');
             setFiller(<View style={{ height: 375 }} />)
         }
         else if (adapterState.toLowerCase() === 'poweredon') {
             dispatch(scanBleDevices());
             setIsScanning(true);
+            setButtonColor(Colors.primary.text);
             setButtonText('Stop Scan');
             // setFiller(<View style={{marginVertical:62.5}}><ActivityIndicator size={250} color={Colors.primary.text} /></View>)
             // setFiller(<View style={{ marginVertical: 87.5 }}><PulsingCircle size={200} duration={1000} pulseColor={Colors.primary.text} /></View>)
@@ -177,15 +180,18 @@ const BLEScreen: React.FC = () => {
             setStateText('Connected');
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
+            setButtonColor('green');
             setButtonText('Connected');
             setFiller(<View style={{ marginVertical: 62.5 }}><CheckmarkCircle /></View>)
             console.log('Connected to device, dispatching...');
             dispatch(startPressureMonitoring());
         }
         else if (isScanning) {
-            setStateText('Scanning...')
+            setButtonColor(Colors.primary.text);
+            setStateText('Scanning...');
         }
         else {
+            setButtonColor(Colors.primary.text);
             switch (adapterState.toLowerCase()) {
                 case 'poweredoff':
                     setIconName('bluetooth-disabled');
@@ -228,7 +234,7 @@ const BLEScreen: React.FC = () => {
             ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>Select a device below to connect.</Text>,
             <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />])} */}
 
-            <Pressable style={[{ backgroundColor: Colors.primary.text, width: 125, }, styles.button.button]} onPress={scanPressHandler}>
+            <Pressable style={[{ backgroundColor: buttonColor, width: 125, }, styles.button.button]} onPress={scanPressHandler}>
                 <Text style={styles.text.whiteTexts}>{buttonText}</Text>
             </Pressable>
         </View>
