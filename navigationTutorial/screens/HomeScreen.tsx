@@ -34,7 +34,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
             <Text style={styles.text.whiteTexts}> Device Not Connected </Text>
           </View>
           {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-          <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('BLE'); console.log('Connect'); }}>
+          <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('BLE') }}>
             <Text style={{ fontWeight: 'bold' }}>Connect</Text>
           </Pressable>
         </View>
@@ -54,7 +54,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.text.whiteTexts}> Device Not Connected </Text>
         </View>
         {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('BLE'); console.log('Connect'); }}>
+        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('BLE') }}>
           <Text style={{ fontWeight: 'bold' }}>Connect</Text>
         </Pressable>
       </View>
@@ -66,7 +66,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           <Text style={styles.text.whiteTexts}> Device Not Calibrated </Text>
         </View>
         {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('Calibration'); console.log('Calibrate') }}>
+        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('Calibration') }}>
           <Text style={{ fontWeight: 'bold' }}>Calibrate</Text>
         </Pressable>
       </View>

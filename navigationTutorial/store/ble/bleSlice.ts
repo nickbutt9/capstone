@@ -1,15 +1,37 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { BleManager, Device } from 'react-native-ble-plx';
+import { BleError, BleManager, Characteristic, Device, Subscription } from 'react-native-ble-plx';
 import { RootState } from '../store';
 import { bleSliceInterface, connectDeviceByIdParams, NetworkState, toBLEDeviceVM } from './bleSlice.contracts';
+import { MonitorPressure } from '../../components/BLEManager/MonitorPressure'
+import bleServices from '../../constants/bleServices';
+import { Buffer } from "buffer";
 
 const bleManager = new BleManager();
 let device: Device;
+let pressureSubscription: Subscription;
 
 const stopScan = () => {
     console.log('Stopping scan');
     bleManager.stopDeviceScan();
 };
+
+const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
+    if (characteristic?.value) {
+        // console.log("Characteristics: " + characteristic.value)
+        const res = Math.round(Buffer.from(characteristic.value, 'base64').readFloatLE());
+        // console.log("Pressure: " + res)
+        
+        // setPressure(res);
+        // if (pressureArray.length > 5) {
+        //     // console.log("Pressure Array: " + pressureArray)
+        //     pressureArray.shift();
+        // } else {
+        //     pressureArray.push(res);
+        // }
+        // // console.log(pressureArray);
+        // savetoStorage(pressureKey, pressureArray);
+    } else { console.log("ERROR for pressure"); console.log(bleError) }
+}
 
 export const scanBleDevices = createAsyncThunk('ble/scanBleDevices', async (_, thunkAPI) => {
     try {
@@ -43,6 +65,16 @@ export const connectDeviceById = createAsyncThunk('ble/connectDeviceById', async
     }
 });
 
+export const startPressureMonitoring = () => async (dispatch: any) =>{
+    try {
+        console.log('Monitoring pressure...')
+        pressureSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
+    }
+    catch (error) {
+        console.error('Error starting pressure monitoring: ', error);
+    }
+}
+
 export const disconnectDevice = createAsyncThunk('ble/disconnectDevice', async (_, thunkAPI) => {
     console.log('Disconnecting')
     if (device) {
@@ -63,6 +95,7 @@ export const disconnectDevice = createAsyncThunk('ble/disconnectDevice', async (
 
 const initialState: bleSliceInterface = {
     adapterState: 'Unknown',
+    bluetoothData: [],
     deviceConnectionState: { status: NetworkState.PENDING, error: '' },
     deviceScan: { devices: [], status: NetworkState.PENDING, error: '' },
     locationPermission: null,
@@ -76,6 +109,10 @@ const bleSlice = createSlice({
         setAdapterState(state, action) {
             const { adapterState } = action.payload;
             state.adapterState = adapterState;
+        },
+        setBluetoothData: (state, action) => {
+            const { pressureData } = action.payload
+            state.bluetoothData = pressureData;
         },
         setLocationPermissionStatus(state, action) {
             const { status } = action.payload;
@@ -141,13 +178,13 @@ const bleSlice = createSlice({
                 }
                 state.connectedDevice = null;
             })
-        ;
+            ;
     },
 });
 
 export default bleSlice.reducer;
 
-export const { setAdapterState, setLocationPermissionStatus, setConnectedDevice, addScannedDevice, clearScannedDevices, stopDeviceScan } = bleSlice.actions;
+export const { setAdapterState, setBluetoothData, setLocationPermissionStatus, setConnectedDevice, addScannedDevice, clearScannedDevices, stopDeviceScan } = bleSlice.actions;
 
 export const selectAdapterState = (state: RootState) => state.ble.adapterState;
 export const selectConnectedDevice = (state: RootState) => state.ble.connectedDevice;

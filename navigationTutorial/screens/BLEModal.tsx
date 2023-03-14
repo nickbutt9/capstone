@@ -4,7 +4,7 @@ import { screenWidth, styles } from '../constants/Styles';
 import MainButton from '../components/button/MainButton';
 // import PrimaryButton from '../components/button/PrimaryButton';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, stopDeviceScan } from '../store/ble/bleSlice';
+import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, startPressureMonitoring,stopDeviceScan } from '../store/ble/bleSlice';
 import { IBLEDevice } from '../store/ble/bleSlice.contracts';
 import { Icon, useToast, Pressable } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -177,8 +177,10 @@ const BLEScreen: React.FC = () => {
             setStateText('Connected');
             dispatch(stopDeviceScan({}));
             setIsScanning(false);
-            setButtonText('Start Scan');
+            setButtonText('Connected');
             setFiller(<View style={{ marginVertical: 62.5 }}><CheckmarkCircle /></View>)
+            console.log('Connected to device, dispatching...');
+            dispatch(startPressureMonitoring());
         }
         else if (isScanning) {
             setStateText('Scanning...')
@@ -217,7 +219,7 @@ const BLEScreen: React.FC = () => {
 
             {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>{res}</Text> */}
 
-            {scannedDevices?.length == 0 ? (filler) :
+            {(scannedDevices?.length == 0 || bleDevice)? (filler) :
                 ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center', marginTop: 15 }}>Select a device below to connect.</Text>,
                 <View style={{ height: 345 }}>
                     <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />
