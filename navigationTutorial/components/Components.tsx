@@ -1,11 +1,8 @@
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text } from '../components/Themed';
-import { styles, chartConfig } from '../constants/Styles';
-import { LineChart, BarChart } from "react-native-chart-kit";
-import { Dimensions, ScrollView, SafeAreaView, Image, ViewStyle } from "react-native";
+import { styles } from '../constants/Styles';
+import { ViewStyle } from "react-native";
 import Colors from '../constants/Colors';
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Animated, View } from 'react-native';
 
 interface CheckmarkCircleProps {

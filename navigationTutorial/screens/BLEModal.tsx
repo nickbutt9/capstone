@@ -1,42 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Button, FlatList, Text, TouchableOpacity, View, PermissionsAndroid, Platform } from 'react-native';
+import { Button, FlatList, Text, TouchableOpacity, View, PermissionsAndroid, Platform } from 'react-native';
 import { screenWidth, styles } from '../constants/Styles';
-import MainButton from '../components/button/MainButton';
-// import PrimaryButton from '../components/button/PrimaryButton';
 import { useAppDispatch, useAppSelector } from '../hooks/hooks';
-import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, startPressureMonitoring,stopDeviceScan } from '../store/ble/bleSlice';
+import { connectDeviceById, scanBleDevices, selectAdapterState, selectConnectedDevice, selectScannedDevices, startServicesMonitoring,stopDeviceScan } from '../store/ble/bleSlice';
 import { IBLEDevice } from '../store/ble/bleSlice.contracts';
 import { Icon, useToast, Pressable } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 import { CheckmarkCircle } from '../components/Components';
-import { FontAwesome } from '@expo/vector-icons';
-import PulsingCircle from '../components/Components';
 import { PulseIndicator } from '../components/PulseIndicator';
-import { Buffer } from 'buffer';
 import * as ExpoDevice from "expo-device";
 
-// const requestBluetoothPermission = async () => {
-//     try {
-//         const granted = await PermissionsAndroid.request(
-//             PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-//             {
-//                 title: 'BLuetooth Permission Required',
-//                 message: 'Bluetooth Permission is required for the Bluetooth communication with phone',
-//                 //   buttonNeutral: 'Ask Me Later',
-//                 //   buttonNegative: 'Cancel',
-//                 buttonPositive: 'OK',
-//             },
-//         );
-//         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-//             console.log('You can use Bluetooth Scan');
-//         } else {
-//             console.log('Bluetooth Scan permission denied');
-//         }
-//     } catch (err) {
-//         console.warn("Error with BLE Permission =", err);
-//     }
-// };
 const requestAndroid31Permissions = async () => {
     const bluetoothScanPermission = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
@@ -184,7 +158,7 @@ const BLEScreen: React.FC = () => {
             setButtonText('Connected');
             setFiller(<View style={{ marginVertical: 62.5 }}><CheckmarkCircle /></View>)
             console.log('Connected to device, dispatching...');
-            dispatch(startPressureMonitoring());
+            dispatch(startServicesMonitoring());
         }
         else if (isScanning) {
             setButtonColor(Colors.primary.text);
@@ -225,7 +199,7 @@ const BLEScreen: React.FC = () => {
 
             {/* <Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center' }}>{res}</Text> */}
 
-            {(scannedDevices?.length == 0 || bleDevice)? (filler) :
+            {(scannedDevices?.length == 0 || bleDevice?.id)? (filler) :
                 ([<Text style={{ ...styles.text.plain, color: 'grey', textAlign: 'center', marginTop: 15 }}>Select a device below to connect.</Text>,
                 <View style={{ height: 345 }}>
                     <FlatList contentContainerStyle={{ width: '100%', justifyContent: 'center' }} data={scannedDevices} renderItem={({ item }) => (<DeviceItem device={item} />)} />
