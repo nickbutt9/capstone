@@ -432,7 +432,7 @@ void setupIMU(void) {
 
 void read_Pressure(float* pressure_hPa) {
   *pressure_hPa = mpr.readPressure();
-  delay(10);
+  delay(7);
 }
 
 void read_IMU(float* mag_x, float* mag_y, float* mag_z, float* gyr_x, float* gyr_y, float* gyr_z, float* acc_x, float* acc_y, float* acc_z) {
@@ -449,7 +449,7 @@ void read_IMU(float* mag_x, float* mag_y, float* mag_z, float* gyr_x, float* gyr
   *acc_x = Oaccel.x;
   *acc_y = Oaccel.y;
   *acc_z = Oaccel.z;
-  delay(10);
+  delay(7);
 }
 
 // void setupLoadCells(void) {

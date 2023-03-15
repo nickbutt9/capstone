@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // import { useAppDispatch } from '../../hooks/hooks';
 
 const bleManager = new BleManager();
+let counter = 0;
 let device: Device;
 let pressureSubscription: Subscription;
 let tempPressureArray: number[] = [];
@@ -32,6 +33,7 @@ const savetoStorage = async (key: string, array: any) => {
 }
 
 const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
+    counter ++;
 
     if (characteristic?.value) {
         // console.log("Characteristics: " + characteristic.value)
@@ -43,23 +45,25 @@ const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristi
         // console.log("Pressure: " + res)
         tempPressureArray.push(res)
 
-        if (tempPressureArray.length == 10) {
+        if (counter == 100) {
+            counter = 0;
             // console.log("Pressure Array: " + pressureArray)
-            average = tempPressureArray.reduce( (p, c) => p+c ) / tempPressureArray.length;
-            tempPressureArray.shift();
+            average = tempPressureArray.reduce((p, c) => p + c) / tempPressureArray.length;
+            tempPressureArray = [];
+            // console.log('Temp: ', tempPressureArray);
+
+            const newAverageArray = [...finalPressureArray, average];
+
+            while (newAverageArray.length > 6) {
+                newAverageArray.shift();
+            }
+            finalPressureArray = newAverageArray;
+            console.log(finalPressureArray);
+            if (finalPressureArray.length == 6) {
+                savetoStorage(pressureKey, finalPressureArray);
+                // console.log('Attempting to save...');
+            }
         }
-        // console.log('Temp: ', tempPressureArray);
-
-        const newAverageArray = [...finalPressureArray, average];
-
-        while (newAverageArray.length > 5) {
-            newAverageArray.shift();
-        }
-        finalPressureArray = newAverageArray;
-
-        // console.log('Final: ', finalPressureArray);
-
-        savetoStorage(pressureKey, finalPressureArray);
     } else { console.log("ERROR for pressure"); console.log(bleError) }
 }
 
@@ -97,7 +101,8 @@ export const connectDeviceById = createAsyncThunk('ble/connectDeviceById', async
 
 export const startPressureMonitoring = () => async (dispatch: any) => {
     try {
-        console.log('Monitoring pressure...')
+        console.log('Monitoring pressure...');
+        savetoStorage(pressureKey, []);
         pressureSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
     }
     catch (error) {
@@ -107,6 +112,10 @@ export const startPressureMonitoring = () => async (dispatch: any) => {
 
 export const disconnectDevice = createAsyncThunk('ble/disconnectDevice', async (_, thunkAPI) => {
     console.log('Disconnecting')
+    if (pressureSubscription) {
+        pressureSubscription.remove();
+        console.log("Remove pressure subscription")
+    }
     if (device) {
         const isDeviceConnected = await device.isConnected();
         if (isDeviceConnected) {
