@@ -207,6 +207,7 @@ export const chartConfig = {
   backgroundGradientToOpacity:0,
   fillShadowGradientFromOpacity:0.5,
   fillShadowGradientToOpacity:0.5,
+  decimalPlaces: 0,
   // color: Colors.secondary.text,
   color: (opacity = 1) => `rgba(62, 96, 193, ${opacity})`,
   barPercentage: 0.75,

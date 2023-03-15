@@ -14,7 +14,7 @@ import {
 import * as Location from 'expo-location';
 import { useToast } from 'native-base';
 import { styles } from '../../constants/Styles';
-import bleServices from '../../constants/bleServices';
+import { bleServices } from '../../constants/bleServices';
 
 const bleManager = new BleManager();
 let device: Device;

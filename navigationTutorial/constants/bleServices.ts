@@ -1,4 +1,4 @@
-const bleServices = {
+export const bleServices = {
     // SAMPLE Service
     sample: {
         SAMPLE_SERVICE_UUID: "cb0f22c6-1000-4737-9f86-1c33f4ee9eea",
@@ -9,4 +9,9 @@ const bleServices = {
     },
 }
 
-export default bleServices
+export const storageKeys = {
+    pressure: "@PressureKey",
+    magField: "@MagFieldKey",
+    acceleration: "@AccelerationKey",
+    angVel: "@AngVelKey",
+}

@@ -85,6 +85,7 @@ export type IAdapterState =
 
 export interface bleSliceInterface {
     adapterState: IAdapterState;
+    bluetoothData: [];
     deviceConnectionState: IDeviceConnectionState;
     deviceScan: IDeviceScan;
     locationPermission: Location.LocationPermissionResponse['status'] | null;
