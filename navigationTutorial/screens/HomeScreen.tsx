@@ -8,7 +8,7 @@ import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
-import { BleError, BleManager, Characteristic, Subscription } from 'react-native-ble-plx';
+import * as Notification from 'expo-notifications';
 
 const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9 * screenWidth;
@@ -17,6 +17,19 @@ const containerWidth = 0.9 * screenWidth;
 
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+
+  const triggerNotification = () => {
+    console.log("Add Sock")
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "High Risk Detected",
+        body: "Consider adding another sock layer"
+      },
+      trigger: {
+        seconds: 10
+      }
+    });
+  }
 
   const device = useAppSelector(selectConnectedDevice);
 
@@ -82,7 +95,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         <Text style={styles.text.subtitle}>Distal End Pressure</Text>
         <AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={40} tintColor={Colors.primary.text} onAnimationComplete={() => console.log('onAnimationComplete')} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />
 
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.secondary.text : Colors.primary.text }, styles.button.button]} onPress={() => [console.log('Add')]}>
+        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.secondary.text : Colors.primary.text }, styles.button.button]} onPress={triggerNotification}>
           <Text style={styles.text.whiteTexts}>Add a sock</Text>
         </Pressable>
       </View>
