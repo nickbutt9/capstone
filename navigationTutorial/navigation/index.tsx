@@ -101,7 +101,6 @@ function BottomTabNavigator() {
         component={PressureScreen}
         options={({ navigation }: RootTabScreenProps<'Pressure'>) => ({
           headerTitle:"",
-          // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="bar-chart" color={color} />,
           headerStyle: {backgroundColor: Colors.grey.text},
           headerLeft:() => (
@@ -122,7 +121,6 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Logs'>) => ({
           headerTitle:"",
           headerStyle: {backgroundColor: Colors.grey.text},
-          // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="calendar" color={color} />,
           headerLeft:() => (
             <Pressable onPress={() => navigation.navigate('Profile')} style={({ pressed }) => ({opacity: pressed ? 0.5 : 1,})}>
@@ -136,7 +134,7 @@ function BottomTabNavigator() {
           ),
         })}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Test"
         component={TestScreen}
         options={({ navigation }: RootTabScreenProps<'Test'>) => ({
@@ -145,7 +143,7 @@ function BottomTabNavigator() {
           // headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="mixcloud" color={color} />,
         })}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }

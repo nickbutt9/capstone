@@ -4,7 +4,6 @@ import { styles } from '../constants/Styles';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
 import { storageKeys} from '../constants/Storage';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import getFromStorage from '../components/Functions';
 
 

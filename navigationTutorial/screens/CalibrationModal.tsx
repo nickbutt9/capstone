@@ -1,17 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { styles } from '../constants/Styles';
 import { Text, View } from '../components/Themed';
 import Colors from '../constants/Colors';
-import React, { useEffect, useState, Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable } from 'native-base';
-import { background, color } from 'native-base/lib/typescript/theme/styled-system';
-import colors from 'native-base/lib/typescript/theme/base/colors';
-import { useIsPressed } from 'native-base/lib/typescript/components/primitives';
 import getFromStorage, { saveToStorage } from '../components/Functions';
 import { storageKeys } from '../constants/Storage';
 import { CheckmarkCircle } from '../components/Components';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CalibrationModal() {
   const [titleText, setTitleText] = useState("Secure Your Prosthetic");

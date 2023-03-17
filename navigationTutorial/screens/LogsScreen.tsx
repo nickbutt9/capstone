@@ -1,7 +1,7 @@
 import { Text, View } from '../components/Themed';
 import { styles } from '../constants/Styles';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { Dimensions, ScrollView, SafeAreaView, Image } from "react-native";
+import { Calendar } from 'react-native-calendars';
+import { SafeAreaView } from "react-native";
 import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
 
