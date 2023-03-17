@@ -8,10 +8,3 @@ export const bleServices = {
         SAMPLE_GYR_CHARACTERISTIC_UUID: "5e6db078-bdea-11ed-afa1-0242ac120002",
     },
 }
-
-export const storageKeys = {
-    pressure: "@PressureKey",
-    magField: "@MagFieldKey",
-    acceleration: "@AccelerationKey",
-    angVel: "@AngVelKey",
-}

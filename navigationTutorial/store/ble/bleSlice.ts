@@ -2,9 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BleError, BleManager, Characteristic, Device, Subscription } from 'react-native-ble-plx';
 import { RootState } from '../store';
 import { bleSliceInterface, connectDeviceByIdParams, NetworkState, toBLEDeviceVM } from './bleSlice.contracts';
-import { bleServices, storageKeys }  from '../../constants/bleServices';
+import { bleServices } from '../../constants/bleServices';
 import { Buffer } from "buffer";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
+import { storageKeys } from '../../constants/Storage';
+import getFromStorage, { saveToStorage } from '../../components/Functions';
 
 // import { useAppDispatch } from '../../hooks/hooks';
 
@@ -40,25 +43,18 @@ const processIMUData = (tempArray: number[][], key: string, finalArray: number[]
         newAverageArray.shift();
     }
     finalArray = newAverageArray;
-    savetoStorage(key, finalArray)
+    saveToStorage(key, finalArray)
     return finalArray;
 }
 
-const savetoStorage = async (key: string, array: any) => {
-    try {
-        await AsyncStorage.setItem(key, JSON.stringify(array));
-        // console.log('Stored' + key);
-    } catch (e) {
-        console.log('Error saving' + key);
-    }
-}
+const pressureMonitorCallbackHandler = async (bleError: BleError | null, characteristic: Characteristic | null) => {
 
-const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
     pressureCounter++;
 
     if (characteristic?.value) {
         // console.log("Characteristics: " + characteristic.value)
         let res = Math.round(Buffer.from(characteristic.value, 'base64').readFloatLE());
+        let highRisk = 1050;
         // const value = characteristic.value;
         // setBluetoothData({ adapterState: res });
 
@@ -69,6 +65,30 @@ const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristi
             pressureCounter = 0;
             // console.log("Pressure Array: " + pressureArray)
             const average = tempPressureArray.reduce((p, c) => p + c) / tempPressureArray.length;
+            console.log(average);
+
+            const lastNotificationTimestamp = await AsyncStorage.getItem(storageKeys.notification);
+            const currentTimestamp = Date.now();
+            getFromStorage(storageKeys.baseline).then((result) => {
+                if (result) {
+                    const baseline = JSON.parse(result);
+                    highRisk = Math.round(baseline + 50);
+                    console.log("High Risk: ", highRisk)
+                }
+              })
+
+            if (average > highRisk && (!lastNotificationTimestamp || currentTimestamp - parseInt(lastNotificationTimestamp) > 10000)) {
+                Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: "High Risk Detected",
+                        body: "Consider adding another sock layer"
+                    },
+                    trigger: null,
+                });
+                console.log('Over pressure Notification')
+                await AsyncStorage.setItem(storageKeys.notification, currentTimestamp.toString());
+            };
+
             tempPressureArray = [];
             // console.log('Temp: ', tempPressureArray);
 
@@ -79,7 +99,7 @@ const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristi
             }
             finalPressureArray = newAverageArray;
             // console.log(finalPressureArray);
-            savetoStorage(storageKeys.pressure, finalPressureArray);
+            saveToStorage(storageKeys.pressure, finalPressureArray);
         }
     } else { console.log("ERROR for pressure"); console.log(bleError) }
 }
@@ -100,7 +120,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
         // console.log(array);
         if (characteristic?.uuid === bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID) {
             magFieldCounter++;
-            
+
             tempMagFieldArray.push(array);
             if (magFieldCounter == 100) {
                 // console.log("Magnetic Field: " + array)
@@ -109,8 +129,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
                 tempMagFieldArray = [];
             }
         } else if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
-            accelerationCounter ++;
-            // console.log("Pressure: " + res)
+            accelerationCounter++;
             tempAccelerationArray.push(array);
 
             if (accelerationCounter == 100) {
@@ -119,8 +138,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
                 tempAccelerationArray = [];
             }
         } else if (characteristic?.uuid === bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID) {
-            angVelCounter ++;
-            // console.log("Pressure: " + res)
+            angVelCounter++;
             tempAngVelArray.push(array);
 
             if (angVelCounter == 100) {
@@ -169,10 +187,12 @@ export const connectDeviceById = createAsyncThunk('ble/connectDeviceById', async
 export const startServicesMonitoring = () => async (dispatch: any) => {
     try {
         console.log('Monitoring services...');
-        savetoStorage(storageKeys.pressure, []);
-        savetoStorage(storageKeys.magField, []);
-        savetoStorage(storageKeys.acceleration, []);
-        savetoStorage(storageKeys.angVel, []);
+        saveToStorage(storageKeys.pressure, []);
+        saveToStorage(storageKeys.magField, []);
+        saveToStorage(storageKeys.acceleration, []);
+        saveToStorage(storageKeys.angVel, []);
+        saveToStorage(storageKeys.baseline, 1000);
+        saveToStorage(storageKeys.calibration, -1);
         pressureSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_PRESSURE_CHARACTERISTIC_UUID, pressureMonitorCallbackHandler);
         magSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
         accSubscription = bleManager.monitorCharacteristicForDevice(device.id, bleServices.sample.SAMPLE_SERVICE_UUID, bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID, imuMonitorCallbackHandler);
