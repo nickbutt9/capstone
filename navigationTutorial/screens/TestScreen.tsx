@@ -3,30 +3,21 @@ import { Text, View } from 'react-native';
 import { styles } from '../constants/Styles';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
-import { storageKeys} from '../constants/bleServices';
+import { storageKeys} from '../constants/Storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import getFromStorage from '../components/Functions';
 
 
 interface BleState {
     bluetoothData: Array<number>; // Replace with the appropriate type of your Bluetooth data
   }
 
-async function getFromStorage(key: string) {
-    try {
-        const jsonValue = await AsyncStorage.getItem(key);
-        return jsonValue;
-    } catch (e) {
-        console.log('Error getting' + key);
-        return '';
-    };
-}
-
 export const TestScreen = (props: { navigation: any }) => {
     const device = useAppSelector(selectConnectedDevice);
-    const [pressureData, setPressureData] = useState<number[]>([])
-    const [magFieldData, setMagFieldData] = useState<number[][]>([])
-    const [accelerationData, setAccelerationData] = useState<number[][]>([])
-    const [angVelData, setAngularVelData] = useState<number[][]>([])
+    const [pressureData, setPressureData] = useState<number[]>([]);
+    const [magFieldData, setMagFieldData] = useState<number[][]>([]);
+    const [accelerationData, setAccelerationData] = useState<number[][]>([]);
+    const [angVelData, setAngularVelData] = useState<number[][]>([]);
 
     useEffect(() => {
         const fetchData = async () => {

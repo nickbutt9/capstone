@@ -8,24 +8,15 @@ import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
-import { storageKeys } from '../constants/bleServices';
+import { storageKeys } from '../constants/Storage';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
 import colors from 'native-base/lib/typescript/theme/base/colors';
+import getFromStorage from '../components/Functions';
 
 const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9 * screenWidth;
-
-async function getFromStorage(key: string) {
-  try {
-    const jsonValue = await AsyncStorage.getItem(key);
-    return jsonValue;
-  } catch (e) {
-    console.log('Error getting' + key);
-    return '';
-  };
-}
 
 const triggerNotification = () => {
   console.log("Notification Sent")
@@ -44,9 +35,33 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   const device = useAppSelector(selectConnectedDevice);
 
+  const alert =
+    <View style={styles.container.alertContainer}>
+      <FontAwesome name="exclamation-triangle" size={25} color='white' />
+      <View style={{ width: 0.6 * containerWidth, backgroundColor: Colors.primary.text }}>
+        <Text style={styles.text.whiteTexts}> Device Not Calibrated </Text>
+      </View>
+      <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('Calibration') }}>
+        <Text style={{ fontWeight: 'bold' }}>Calibrate</Text>
+      </Pressable>
+    </View>
+
+  const recalibrate =
+    <View style={styles.container.alertContainer}>
+      <FontAwesome name="check" size={25} color='white' />
+      <View style={{ width: 0.5 * containerWidth, backgroundColor: Colors.primary.text }}>
+        <Text style={styles.text.whiteTexts}> Device Calibrated </Text>
+      </View>
+      <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('Calibration') }}>
+        <Text style={{ fontWeight: 'bold' }}>Re-Calibrate</Text>
+      </Pressable>
+    </View>
+
   let tint = Colors.primary.text;
 
   const [pressureValue, setPressureValue] = useState<number>(0);
+  const [baselinePressure, setBaselinePressure] = useState<number>(1000);
+  const [calibrationAlert, setCalibrationAlert] = useState(alert);
   const [gauge, setGauge] = useState(<AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={10} tintColor={tint} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />)
 
   useEffect(() => {
@@ -55,12 +70,29 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         getFromStorage(storageKeys.pressure).then((dataArray) => {
           if (dataArray) {
             const array: number[] = JSON.parse(dataArray);
-            // console.log(array);
-            // console.log(array.length);
             const value = array[array.length - 1];
-            // console.log(value);
             if (value) {
               setPressureValue(value);
+            }
+          }
+        })
+        getFromStorage(storageKeys.calibration).then((calibration) => {
+          if (calibration) {
+            const result = JSON.parse(calibration);
+            if (result > 0) {
+              setCalibrationAlert(recalibrate);
+            } else {
+              setCalibrationAlert(alert);
+            }
+          }
+        })
+        getFromStorage(storageKeys.baseline).then((baseline) => {
+          if (baseline) {
+            const value: number = JSON.parse(baseline);
+            if (value) {
+              setBaselinePressure(Math.round(value));
+            } else {
+              setBaselinePressure(1000);
             }
           }
         })
@@ -73,15 +105,14 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   }, []);
 
   useEffect(() => {
-    console.log(pressureValue);
+    // console.log(pressureValue);
     if (pressureValue) {
 
-      const percentage = (pressureValue - 1000) / 0.8;
-      if ( percentage <= 33) { tint = Colors.primary.text; }
+      const percentage = (pressureValue - (baselinePressure - 5)) / 0.8;
+      if (percentage <= 33) { tint = Colors.primary.text; }
       else if (percentage > 33 && percentage <= 66) { tint = 'orange'; }
       else if (percentage > 66) { tint = 'red'; }
       else { tint = Colors.primary.text; }
-      
 
       setGauge(<AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={percentage} tintColor={tint} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />)
 
@@ -110,42 +141,12 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     );
   }
 
-
-  let alertView;
-
-  if (!deviceConnected) {
-
-    alertView =
-      <View style={styles.container.alertContainer}>
-        <FontAwesome name="exclamation-triangle" size={25} color='white' />
-        <View style={{ width: 0.6 * containerWidth, backgroundColor: Colors.primary.text }}>
-          <Text style={styles.text.whiteTexts}> Device Not Connected </Text>
-        </View>
-        {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('BLE') }}>
-          <Text style={{ fontWeight: 'bold' }}>Connect</Text>
-        </Pressable>
-      </View>
-  } else if (!calibrated) {
-    alertView =
-      <View style={styles.container.alertContainer}>
-        <FontAwesome name="exclamation-triangle" size={25} color='white' />
-        <View style={{ width: 0.6 * containerWidth, backgroundColor: Colors.primary.text }}>
-          <Text style={styles.text.whiteTexts}> Device Not Calibrated </Text>
-        </View>
-        {/* <View style={{width:0.4*containerWidth, backgroundColor:Colors.primary.text}}></View> */}
-        <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.grey.text : 'white' }, styles.button.alertButton]} onPress={() => { navigation.navigate('Calibration') }}>
-          <Text style={{ fontWeight: 'bold' }}>Calibrate</Text>
-        </Pressable>
-      </View>
-  };
-
   return (
 
     <SafeAreaView style={styles.container.plainContainer}>
       <Text style={styles.text.title}>Welcome John!</Text>
       <View style={styles.seperator.seperator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      {alertView}
+      {calibrationAlert}
       <View style={styles.container.homeContainer}>
         <Text style={styles.text.subtitle}>Distal End Pressure</Text>
         {gauge}
