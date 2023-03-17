@@ -11,10 +11,20 @@ import 'expo-dev-client';
 import store from './store/store'
 import { Provider } from 'react-redux';
 
+import * as Notifications from 'expo-notifications';
+
 export default function App() {
   console.log("App Refreshed")
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
   if (!isLoadingComplete) {
     return null;
@@ -24,7 +34,7 @@ export default function App() {
         <NativeBaseProvider>
           <PopupProvider>
             <SafeAreaProvider >
-              
+
               <Navigation colorScheme={colorScheme} />
               <StatusBar />
             </SafeAreaProvider>

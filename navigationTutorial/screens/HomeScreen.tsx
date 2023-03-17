@@ -1,46 +1,101 @@
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { styles } from '../constants/Styles';
-import { Dimensions, ScrollView, SafeAreaView, Image, Pressable } from "react-native";
+import { Animated, Dimensions, ScrollView, SafeAreaView, Image, Pressable } from "react-native";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as Progress from 'react-native-progress'
 import Colors from '../constants/Colors'
 import { FontAwesome } from '@expo/vector-icons';
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
-import * as Notification from 'expo-notifications';
+import { storageKeys } from '../constants/bleServices';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
+import colors from 'native-base/lib/typescript/theme/base/colors';
 
 const screenWidth = Dimensions.get("window").width;
 const containerWidth = 0.9 * screenWidth;
-// const bleManager = new BleManager();
 
+async function getFromStorage(key: string) {
+  try {
+    const jsonValue = await AsyncStorage.getItem(key);
+    return jsonValue;
+  } catch (e) {
+    console.log('Error getting' + key);
+    return '';
+  };
+}
 
+const triggerNotification = () => {
+  console.log("Notification Sent")
+  Notifications.scheduleNotificationAsync({
+    content: {
+      title: "High Risk Detected",
+      body: "Consider adding another sock layer"
+    },
+    trigger: {
+      seconds: 5
+    }
+  });
+}
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
-  const triggerNotification = () => {
-    console.log("Add Sock")
-    Notification.scheduleNotificationAsync({
-      content: {
-        title: "High Risk Detected",
-        body: "Consider adding another sock layer"
-      },
-      trigger: {
-        seconds: 10
-      }
-    });
-  }
-
   const device = useAppSelector(selectConnectedDevice);
+
+  let tint = Colors.primary.text;
+
+  const [pressureValue, setPressureValue] = useState<number>(0);
+  const [gauge, setGauge] = useState(<AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={10} tintColor={tint} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        getFromStorage(storageKeys.pressure).then((dataArray) => {
+          if (dataArray) {
+            const array: number[] = JSON.parse(dataArray);
+            // console.log(array);
+            // console.log(array.length);
+            const value = array[array.length - 1];
+            // console.log(value);
+            if (value) {
+              setPressureValue(value);
+            }
+          }
+        })
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const interval = setInterval(fetchData, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    console.log(pressureValue);
+    if (pressureValue) {
+
+      const percentage = (pressureValue - 1000) / 0.8;
+      if ( percentage <= 33) { tint = Colors.primary.text; }
+      else if (percentage > 33 && percentage <= 66) { tint = 'orange'; }
+      else if (percentage > 66) { tint = 'red'; }
+      else { tint = Colors.primary.text; }
+      
+
+      setGauge(<AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={percentage} tintColor={tint} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />)
+
+    }
+  }, [pressureValue]);
 
   let deviceConnected = false;
   let calibrated = false;
 
   if (device?.id) { deviceConnected = true }
 
-  if (!deviceConnected){
+  if (!deviceConnected) {
     return (
-      <View style={[styles.container.plainContainer, {marginTop:15}]}>
+      <View style={[styles.container.plainContainer, { marginTop: 15 }]}>
         <View style={styles.container.alertContainer}>
           <FontAwesome name="exclamation-triangle" size={25} color='white' />
           <View style={{ width: 0.6 * containerWidth, backgroundColor: Colors.primary.text }}>
@@ -54,7 +109,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       </View>
     );
   }
-  
+
 
   let alertView;
 
@@ -93,8 +148,8 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       {alertView}
       <View style={styles.container.homeContainer}>
         <Text style={styles.text.subtitle}>Distal End Pressure</Text>
-        <AnimatedCircularProgress size={200} backgroundWidth={20} width={30} fill={40} tintColor={Colors.primary.text} onAnimationComplete={() => console.log('onAnimationComplete')} arcSweepAngle={200} rotation={260} lineCap='round' backgroundColor={Colors.shading.text} style={styles.shape.gauge} />
-
+        {gauge}
+        {/* <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.secondary.text : Colors.primary.text }, styles.button.button]} onPress={() => { [console.log('Notification Button'), triggerNotification ]}}> */}
         <Pressable style={({ pressed }) => [{ backgroundColor: pressed ? Colors.secondary.text : Colors.primary.text }, styles.button.button]} onPress={triggerNotification}>
           <Text style={styles.text.whiteTexts}>Add a sock</Text>
         </Pressable>

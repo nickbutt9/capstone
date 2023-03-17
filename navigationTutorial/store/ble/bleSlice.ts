@@ -2,9 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { BleError, BleManager, Characteristic, Device, Subscription } from 'react-native-ble-plx';
 import { RootState } from '../store';
 import { bleSliceInterface, connectDeviceByIdParams, NetworkState, toBLEDeviceVM } from './bleSlice.contracts';
-import { bleServices, storageKeys }  from '../../constants/bleServices';
+import { bleServices, storageKeys } from '../../constants/bleServices';
 import { Buffer } from "buffer";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Notifications from 'expo-notifications';
 
 // import { useAppDispatch } from '../../hooks/hooks';
 
@@ -53,7 +54,8 @@ const savetoStorage = async (key: string, array: any) => {
     }
 }
 
-const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristic: Characteristic | null) => {
+const pressureMonitorCallbackHandler = async (bleError: BleError | null, characteristic: Characteristic | null) => {
+
     pressureCounter++;
 
     if (characteristic?.value) {
@@ -69,6 +71,23 @@ const pressureMonitorCallbackHandler = (bleError: BleError | null, characteristi
             pressureCounter = 0;
             // console.log("Pressure Array: " + pressureArray)
             const average = tempPressureArray.reduce((p, c) => p + c) / tempPressureArray.length;
+            // console.log(average);
+
+            const lastNotificationTimestamp = await AsyncStorage.getItem('lastNotificationTimestamp');
+            const currentTimestamp = Date.now();
+
+            if (average > 1050 && (!lastNotificationTimestamp || currentTimestamp - parseInt(lastNotificationTimestamp) > 10000)) {
+                Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: "High Risk Detected",
+                        body: "Consider adding another sock layer"
+                    },
+                    trigger: null,
+                });
+                console.log('Over pressure Notification')
+                await AsyncStorage.setItem('lastNotificationTimestamp', currentTimestamp.toString());
+            };
+
             tempPressureArray = [];
             // console.log('Temp: ', tempPressureArray);
 
@@ -100,7 +119,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
         // console.log(array);
         if (characteristic?.uuid === bleServices.sample.SAMPLE_MAG_CHARACTERISTIC_UUID) {
             magFieldCounter++;
-            
+
             tempMagFieldArray.push(array);
             if (magFieldCounter == 100) {
                 // console.log("Magnetic Field: " + array)
@@ -109,7 +128,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
                 tempMagFieldArray = [];
             }
         } else if (characteristic?.uuid === bleServices.sample.SAMPLE_ACC_CHARACTERISTIC_UUID) {
-            accelerationCounter ++;
+            accelerationCounter++;
             // console.log("Pressure: " + res)
             tempAccelerationArray.push(array);
 
@@ -119,7 +138,7 @@ const imuMonitorCallbackHandler = (bleError: BleError | null, characteristic: Ch
                 tempAccelerationArray = [];
             }
         } else if (characteristic?.uuid === bleServices.sample.SAMPLE_GYR_CHARACTERISTIC_UUID) {
-            angVelCounter ++;
+            angVelCounter++;
             // console.log("Pressure: " + res)
             tempAngVelArray.push(array);
 

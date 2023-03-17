@@ -6,18 +6,10 @@ import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../store/store';
 
 const screenWidth = Dimensions.get("window").width;
 const chartWidth = 0.8 * screenWidth;
 const chartHeight = 200;
-
-// interface BleState {
-//   bluetoothData: Array<number>; // Replace with the appropriate type of your Bluetooth data
-// }
-
-// const bluetoothData = useSelector((state: RootState) => (state as unknown as BleState).bluetoothData);
 
 async function getFromStorage(key: string) {
   try {
@@ -77,11 +69,11 @@ export default function PressureScreen() {
         strokeWidth: 2 // optional
       },
       {
-        data: [970], // min
+        data: [900], // min
         withDots: false,
       },
       {
-        data: [1050], // max
+        data: [1200], // max
         withDots: false,
       },
     ],
