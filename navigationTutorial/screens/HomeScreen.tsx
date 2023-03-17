@@ -1,7 +1,7 @@
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { styles } from '../constants/Styles';
-import { Animated, Dimensions, ScrollView, SafeAreaView, Image, Pressable } from "react-native";
+import { Dimensions, SafeAreaView, Pressable } from "react-native";
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 import * as Progress from 'react-native-progress'
 import Colors from '../constants/Colors'
@@ -10,9 +10,7 @@ import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
 import { storageKeys } from '../constants/Storage';
 import React, { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Notifications from 'expo-notifications';
-import colors from 'native-base/lib/typescript/theme/base/colors';
 import getFromStorage from '../components/Functions';
 
 const screenWidth = Dimensions.get("window").width;

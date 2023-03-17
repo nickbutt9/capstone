@@ -1,11 +1,10 @@
 import { Text, View } from '../components/Themed';
 import { styles, chartConfig } from '../constants/Styles';
 import { LineChart, BarChart } from "react-native-chart-kit";
-import { Dimensions, ScrollView, SafeAreaView, Image } from "react-native";
+import { Dimensions, ScrollView, SafeAreaView } from "react-native";
 import { useAppSelector } from '../hooks/hooks';
 import { selectConnectedDevice } from '../store/ble/bleSlice';
 import React, { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import getFromStorage from '../components/Functions';
 import { storageKeys } from '../constants/Storage';
 

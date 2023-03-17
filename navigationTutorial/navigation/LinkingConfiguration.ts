@@ -30,11 +30,11 @@ const linking: LinkingOptions<RootStackParamList> = {
               LogsScreen: 'three',
             },
           },
-          Test: {
-            screens: {
-              TestScreen: 'four',
-            },
-          },
+          // Test: {
+          //   screens: {
+          //     TestScreen: 'four',
+          //   },
+          // },
         },
       },
       Modal: 'modal',

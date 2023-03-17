@@ -32,7 +32,7 @@ export type RootTabParamList = {
   Home: undefined;
   Pressure: undefined;
   Logs: undefined;
-  Test: undefined
+  // Test: undefined
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<

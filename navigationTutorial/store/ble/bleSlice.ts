@@ -36,7 +36,6 @@ const stopScan = () => {
 };
 
 const processIMUData = (tempArray: number[][], key: string, finalArray: number[][]) => {
-    // console.log("Proess IMU");
     const average = tempArray[0].map((col, i) => tempArray.map(row => row[i]).reduce((acc, c) => acc + c, 0) / tempArray.length);
     const newAverageArray: number[][] = [...finalArray, average];
     while (newAverageArray.length > 6) {
@@ -52,18 +51,12 @@ const pressureMonitorCallbackHandler = async (bleError: BleError | null, charact
     pressureCounter++;
 
     if (characteristic?.value) {
-        // console.log("Characteristics: " + characteristic.value)
         let res = Math.round(Buffer.from(characteristic.value, 'base64').readFloatLE());
         let highRisk = 1050;
-        // const value = characteristic.value;
-        // setBluetoothData({ adapterState: res });
-
-        // console.log("Pressure: " + res)
         tempPressureArray.push(res)
 
         if (pressureCounter == 100) {
             pressureCounter = 0;
-            // console.log("Pressure Array: " + pressureArray)
             const average = tempPressureArray.reduce((p, c) => p + c) / tempPressureArray.length;
             console.log(average);
 
@@ -90,7 +83,6 @@ const pressureMonitorCallbackHandler = async (bleError: BleError | null, charact
             };
 
             tempPressureArray = [];
-            // console.log('Temp: ', tempPressureArray);
 
             const newAverageArray = [...finalPressureArray, average];
 
@@ -98,7 +90,6 @@ const pressureMonitorCallbackHandler = async (bleError: BleError | null, charact
                 newAverageArray.shift();
             }
             finalPressureArray = newAverageArray;
-            // console.log(finalPressureArray);
             saveToStorage(storageKeys.pressure, finalPressureArray);
         }
     } else { console.log("ERROR for pressure"); console.log(bleError) }
@@ -208,6 +199,18 @@ export const disconnectDevice = createAsyncThunk('ble/disconnectDevice', async (
     if (pressureSubscription) {
         pressureSubscription.remove();
         console.log("Remove pressure subscription")
+    }
+    if (magSubscription) {
+        magSubscription.remove();
+        console.log("Remove mag field subscription")
+    }
+    if (accSubscription) {
+        accSubscription.remove();
+        console.log("Remove acceleration subscription")
+    }
+    if (angVelSubscription) {
+        angVelSubscription.remove();
+        console.log("Remove angular velocity subscription")
     }
     if (device) {
         const isDeviceConnected = await device.isConnected();
